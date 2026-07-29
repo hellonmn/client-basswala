@@ -1,0 +1,168 @@
+{
+  "expo": {
+    "name": "Basswala",
+    "description": "Book DJs for your events in 3 taps — Basswala lets you discover, compare and reserve DJs with verified reviews and instant booking confirmation.",
+    "slug": "basswala",
+    "version": "1.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "basswala",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "googleServicesFile": "./GoogleService-Info.plist",
+      "supportsTablet": false,
+      "bundleIdentifier": "com.basswaala.djbooking",
+      "buildNumber": "25",
+      "associatedDomains": [
+        "applinks:basswala.com",
+        "applinks:www.basswala.com"
+      ],
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "We need your location to show DJ equipment available in your area",
+        "NSLocationAlwaysUsageDescription": "We need your location to show DJ equipment available in your area",
+        "NSCameraUsageDescription": "Allow Basswala to use your camera to scan a captain's QR code and open their profile.",
+        "NSPhotoLibraryUsageDescription": "Basswala uses your photo library so you can upload a profile picture to personalise your account. For example, select a selfie to appear on your bookings.",
+        "ITSAppUsesNonExemptEncryption": false
+      },
+      "usesAppleSignIn": true,
+      "entitlements": {
+        "com.apple.developer.applesignin": [
+          "Default"
+        ]
+      }
+    },
+    "android": {
+      "googleServicesFile": "./google-services.json",
+      "adaptiveIcon": {
+        "backgroundColor": "#000000",
+        "foregroundImage": "./assets/images/android-icon-foreground.png",
+        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+      },
+      "package": "com.basswaala.djbooking",
+      "versionCode": 31,
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION",
+        "INTERNET",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.CAMERA"
+      ],
+      "blockedPermissions": [
+        "com.google.android.gms.permission.AD_ID"
+      ],
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "https",
+              "host": "basswala.com"
+            },
+            {
+              "scheme": "https",
+              "host": "www.basswala.com"
+            }
+          ],
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
+        }
+      ],
+      "edgeToEdgeEnabled": true,
+      "predictiveBackGestureEnabled": false,
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyC8aqPkOqrKvZ6f5aQTE-vmymW-RReK4Bo"
+        }
+      }
+    },
+    "web": {
+      "output": "single",
+      "favicon": "./assets/images/logo.png",
+      "name": "Basswala — Book DJs in 3 taps",
+      "shortName": "Basswala",
+      "description": "Discover, compare and book DJs for your events in 3 taps. Verified reviews, instant booking, secure payments.",
+      "themeColor": "#02023E",
+      "backgroundColor": "#f4f8ff",
+      "lang": "en"
+    },
+    "plugins": [
+      "./plugins/with-upi-queries",
+      "./plugins/with-strip-ad-id",
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "useFrameworks": "static",
+            "forceStaticLinking": [
+              "RNFBApp",
+              "RNFBAuth"
+            ]
+          }
+        }
+      ],
+      "@react-native-firebase/app",
+      "@react-native-firebase/auth",
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/splash-icon.png",
+          "imageWidth": 240,
+          "resizeMode": "contain",
+          "backgroundColor": "#000000",
+          "dark": {
+            "image": "./assets/images/splash-icon.png",
+            "imageWidth": 240,
+            "resizeMode": "contain",
+            "backgroundColor": "#000000"
+          }
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow Basswala DJ Rental to use your location to show nearby equipment and services.",
+          "locationWhenInUsePermission": "Allow Basswala DJ Rental to use your location to show nearby equipment and services.",
+          "isAndroidBackgroundLocationEnabled": false,
+          "isAndroidForegroundServiceEnabled": false
+        }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow Basswala to use your camera to scan a captain's QR code and open their profile.",
+          "microphonePermission": false,
+          "recordAudioAndroid": false
+        }
+      ],
+      "expo-secure-store",
+      "@react-native-google-signin/google-signin",
+      "expo-apple-authentication",
+      "expo-web-browser",
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/images/notification-icon.png",
+          "color": "#02023E",
+          "defaultChannel": "default"
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "ec682222-b0c3-4654-981c-37883c47cfbc"
+      }
+    },
+    "owner": "hellonmn"
+  }
+}

@@ -1,0 +1,354 @@
+{
+  "project_info": {
+    "project_number": "307784786805",
+    "project_id": "basswala-client-51bb9",
+    "storage_bucket": "basswala-client-51bb9.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:307784786805:android:c89f316b493e604bb1693c",
+        "android_client_info": {
+          "package_name": "com.basswaala.client"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "307784786805-3nlf1hlnb45b9soqe9sh0qh08jf7og7j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.basswaala.client",
+            "certificate_hash": "20daa49d6616744aa44ee3b69011ba2fcd4022a8"
+          }
+        },
+        {
+          "client_id": "307784786805-5umj30b9mlga2g36t622g83i8b3rhhon.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.basswaala.client",
+            "certificate_hash": "6ffbf83d079b2cad6b8760e8c06584b36fdd7dad"
+          }
+        },
+        {
+          "client_id": "307784786805-f9chjc15a6n9a83tkpvn1laecsdbp2ur.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.basswaala.client",
+            "certificate_hash": "05256de556b12dd4d7475e28bee8989c324afae2"
+          }
+        },
+        {
+          "client_id": "307784786805-q0h435maanrqjd4cdstmmt04heh06sfn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.basswaala.client",
+            "certificate_hash": "9ba87cddc98917dbcba3b436b41623e9c2e798e5"
+          }
+        },
+        {
+          "client_id": "307784786805-vf7she8rqb988n66gl1kchona7k3gtp5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.basswaala.client",
+            "certificate_hash": "5059dcf02fbbf9cb614c275f668dcbf2ee6eac39"
+          }
+        },
+        {
+          "client_id": "307784786805-367sr8uhq6g4enb9eoiv8ae9dt4irmnp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQksZApN2LsodfWGBA0ywUy6igpQ0qmL8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "307784786805-367sr8uhq6g4enb9eoiv8ae9dt4irmnp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "307784786805-82up9jij7dongdiksncgvs0irrd3v791.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.basswaalaClient"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:307784786805:android:28af490ed48d9c72b1693c",
+        "android_client_info": {
+          "package_name": "com.basswaala.djbooking"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "307784786805-0uqnee5221f60skn3it12c3vh5qv51g1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.basswaala.djbooking",
+            "certificate_hash": "9ba87cddc98917dbcba3b436b41623e9c2e798e5"
+          }
+        },
+        {
+          "client_id": "307784786805-2nnv7tg35i4ql3c6vqf1rdckrlch0aff.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.basswaala.djbooking",
+            "certificate_hash": "ff0bb4faeb22d31f823f02cd69ef7e2606432379"
+          }
+        },
+        {
+          "client_id": "307784786805-fltnpoh6haqls6ukn73o9sbqdhfdirj1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.basswaala.djbooking",
+            "certificate_hash": "6ffbf83d079b2cad6b8760e8c06584b36fdd7dad"
+          }
+        },
+        {
+          "client_id": "307784786805-ickvqngrrul025jlisge295ano2h4emo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.basswaala.djbooking",
+            "certificate_hash": "0255240d2d3066ce08c5073dc0974b84ef337ad0"
+          }
+        },
+        {
+          "client_id": "307784786805-367sr8uhq6g4enb9eoiv8ae9dt4irmnp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQksZApN2LsodfWGBA0ywUy6igpQ0qmL8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "307784786805-367sr8uhq6g4enb9eoiv8ae9dt4irmnp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "307784786805-82up9jij7dongdiksncgvs0irrd3v791.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.basswaalaClient"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:307784786805:android:4672a42de4eb354eb1693c",
+        "android_client_info": {
+          "package_name": "com.basswaala.serviceprovider"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "307784786805-5dhtd1dgdeuv27ur6qpihit7bjejs9n2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.basswaala.serviceprovider",
+            "certificate_hash": "31effe9f20b833d28c3f088bd4e8a37f3b39506d"
+          }
+        },
+        {
+          "client_id": "307784786805-f4l0mukcgtm67i0grnu5o0hbtpi4ms1p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.basswaala.serviceprovider",
+            "certificate_hash": "05256de556b12dd4d7475e28bee8989c324afae2"
+          }
+        },
+        {
+          "client_id": "307784786805-uqg6prf22ulos43fdguiricktv2jfh8q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.basswaala.serviceprovider",
+            "certificate_hash": "363d1926a530e82ed48fe06fcb9beb75bec26638"
+          }
+        },
+        {
+          "client_id": "307784786805-367sr8uhq6g4enb9eoiv8ae9dt4irmnp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQksZApN2LsodfWGBA0ywUy6igpQ0qmL8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "307784786805-367sr8uhq6g4enb9eoiv8ae9dt4irmnp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "307784786805-82up9jij7dongdiksncgvs0irrd3v791.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.basswaalaClient"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:307784786805:android:f43cb3a1afcbe4f0b1693c",
+        "android_client_info": {
+          "package_name": "com.basswala.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "307784786805-76vkqid5mb2c8u20o5fd8angv8rfrmq1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.basswala.app",
+            "certificate_hash": "128f7805d038aacaf2526700281b87032a37501e"
+          }
+        },
+        {
+          "client_id": "307784786805-fenebil0rom9ehojh58mlvq1202otnc1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.basswala.app",
+            "certificate_hash": "0255240d2d3066ce08c5073dc0974b84ef337ad0"
+          }
+        },
+        {
+          "client_id": "307784786805-367sr8uhq6g4enb9eoiv8ae9dt4irmnp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQksZApN2LsodfWGBA0ywUy6igpQ0qmL8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "307784786805-367sr8uhq6g4enb9eoiv8ae9dt4irmnp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "307784786805-82up9jij7dongdiksncgvs0irrd3v791.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.basswaalaClient"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:307784786805:android:b4a0dc5ed533c1fbb1693c",
+        "android_client_info": {
+          "package_name": "com.basswala.captain"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "307784786805-impqgmvbs40op37qu8oisf2do533po43.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.basswala.captain",
+            "certificate_hash": "63de304751283361103c3100d0c620d00a2fa0c9"
+          }
+        },
+        {
+          "client_id": "307784786805-367sr8uhq6g4enb9eoiv8ae9dt4irmnp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQksZApN2LsodfWGBA0ywUy6igpQ0qmL8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "307784786805-367sr8uhq6g4enb9eoiv8ae9dt4irmnp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "307784786805-82up9jij7dongdiksncgvs0irrd3v791.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.basswaalaClient"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:307784786805:android:9a2567a14d511271b1693c",
+        "android_client_info": {
+          "package_name": "com.basswala.partner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "307784786805-8cg44itnt39ih65133bugmo90euu0pld.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.basswala.partner",
+            "certificate_hash": "63de304751283361103c3100d0c620d00a2fa0c9"
+          }
+        },
+        {
+          "client_id": "307784786805-367sr8uhq6g4enb9eoiv8ae9dt4irmnp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQksZApN2LsodfWGBA0ywUy6igpQ0qmL8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "307784786805-367sr8uhq6g4enb9eoiv8ae9dt4irmnp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "307784786805-82up9jij7dongdiksncgvs0irrd3v791.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.basswaalaClient"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

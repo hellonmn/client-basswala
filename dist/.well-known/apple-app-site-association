@@ -1,0 +1,15 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["TEAMID.com.basswala.app"],
+        "components": [
+          { "/": "/captain/*" },
+          { "/": "/dj-detail*" },
+          { "/": "/equipment/*" },
+          { "/": "/booking-flow*" }
+        ]
+      }
+    ]
+  }
+}

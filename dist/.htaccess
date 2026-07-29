@@ -1,0 +1,45 @@
+# SPA rewrite — every route falls back to index.html so client-side routing works.
+# Required for Expo Router single-page web builds deployed on Apache (Hostinger).
+
+RewriteEngine On
+
+# Apple/Android deep-link verification files must be served BEFORE the SPA
+# rewrite, with the right MIME type. Apple requires the AASA file with no
+# extension and Content-Type: application/json. Android wants assetlinks.json
+# with the same MIME.
+<Files "apple-app-site-association">
+  ForceType application/json
+</Files>
+<Files "assetlinks.json">
+  ForceType application/json
+</Files>
+
+RewriteRule ^\.well-known/apple-app-site-association$ - [L]
+RewriteRule ^\.well-known/assetlinks\.json$ - [L]
+
+# Allow real static files/folders to be served normally
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Everything else → index.html
+RewriteRule ^ index.html [L]
+
+# Optional: set correct content-type + caching for static assets
+<IfModule mod_mime.c>
+  AddType application/javascript .js
+  AddType application/json .json
+  AddType text/css .css
+  AddType image/svg+xml .svg
+</IfModule>
+
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/html "access plus 0 seconds"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType application/font-woff2 "access plus 1 year"
+</IfModule>
