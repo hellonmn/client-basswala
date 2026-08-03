@@ -967,10 +967,10 @@ export default function HomeScreen() {
                   </View>
                 ) : (
                   // Fallback: the built-in "Quick Booking" promo, kept so the
-                  // home tab isn't blank for a brand-new install.
+                  // Fallback: the built-in "Quick Booking" promo with official Basswala mascot & cyan branding
                   <View style={s.bannerSection}>
                     <LinearGradient
-                      colors={["#cfe8ff", "#c5d9f7"]}
+                      colors={["#02023E", "#070D2A", "#01011A"]}
                       start={{ x: 0, y: 0 }}
                       end={{ x: 1, y: 1 }}
                       style={s.bannerCard}
@@ -979,23 +979,18 @@ export default function HomeScreen() {
                         <View style={s.bannerBadge}>
                           <Text style={s.bannerBadgeText}>QUICK BOOKING</Text>
                         </View>
-                        <Text style={s.bannerText}>Book a DJ in{"\n"}three taps</Text>
-                        <TouchableOpacity style={s.bannerBtn} onPress={() => switchTab("dj")}>
-                          <Text style={s.bannerBtnText}>Start</Text>
-                          <Ionicons name="arrow-forward" size={15} color="#fff" />
+                        <Text style={s.bannerText}>Book a DJ & Sound{"\n"}in three taps</Text>
+                        <TouchableOpacity style={s.bannerBtn} activeOpacity={0.85} onPress={() => switchTab("dj")}>
+                          <Text style={s.bannerBtnText}>Start Booking</Text>
+                          <Ionicons name="arrow-forward" size={15} color="#010128" />
                         </TouchableOpacity>
                       </View>
                       <View style={s.bannerRight}>
-                        <View style={s.lottieWrap}>
-                          <LottieView
-                            ref={lottieRef}
-                            source={require("../../assets/animations/banner.json")}
-                            autoPlay
-                            loop={false}
-                            style={s.lottie}
-                            onAnimationFinish={() => setShouldPlay(false)}
-                          />
-                        </View>
+                        <Image
+                          source={require("../../assets/images/speaker-banner-mascot.png")}
+                          style={s.bannerMascotImg}
+                          resizeMode="contain"
+                        />
                       </View>
                     </LinearGradient>
                   </View>
@@ -1530,16 +1525,31 @@ const s = StyleSheet.create({
   searchPlaceholder: { flex: 1, fontSize: 15, color: "#8696a0", fontWeight: "400" },
   filterBtn: { width: 50, height: 50, borderRadius: 16, backgroundColor: "#fff", justifyContent: "center", alignItems: "center", borderWidth: 1, borderColor: "#eef0f3" },
   bannerSection: { paddingHorizontal: 20, marginBottom: 28 },
-  bannerCard: { borderRadius: 22, flexDirection: "row", alignItems: "center", height: 156, paddingHorizontal: 22, overflow: "hidden" },
-  bannerLeft: { flex: 1, gap: 10, zIndex: 2 },
-  bannerBadge: { alignSelf: "flex-start", backgroundColor: "#fff", borderRadius: 20, paddingHorizontal: 10, paddingVertical: 4 },
-  bannerBadgeText: { fontSize: 9, fontWeight: "800", color: "#02023E", letterSpacing: 0.8 },
-  bannerText: { fontSize: 21, fontWeight: "800", color: "#101720", lineHeight: 27 },
-  bannerBtn: { flexDirection: "row", alignItems: "center", alignSelf: "flex-start", backgroundColor: "#101720", paddingHorizontal: 18, paddingVertical: 10, borderRadius: 50, gap: 6 },
-  bannerBtnText: { fontSize: 13, fontWeight: "700", color: "#fff" },
-  bannerRight: { flex: 1, alignItems: "flex-end", justifyContent: "center" },
-  lottieWrap: { position: "absolute", right: -42, top: -110, width: 190, height: 190 },
-  lottie: { width: "100%", height: "100%" },
+  bannerCard: { 
+    borderRadius: 24, 
+    flexDirection: "row", 
+    alignItems: "center", 
+    height: 165, 
+    paddingLeft: 20, 
+    paddingRight: 8,
+    overflow: "hidden", 
+    position: "relative",
+    borderWidth: 1.5,
+    borderColor: "rgba(5, 234, 247, 0.35)",
+    shadowColor: "#05EAF7",
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.2,
+    shadowRadius: 16,
+    elevation: 8,
+  },
+  bannerLeft: { flex: 1.1, gap: 10, zIndex: 2, paddingVertical: 12 },
+  bannerBadge: { alignSelf: "flex-start", backgroundColor: "rgba(5, 234, 247, 0.15)", borderColor: "rgba(5, 234, 247, 0.4)", borderWidth: 1, borderRadius: 20, paddingHorizontal: 10, paddingVertical: 4 },
+  bannerBadgeText: { fontSize: 9, fontWeight: "800", color: "#05EAF7", letterSpacing: 0.8 },
+  bannerText: { fontSize: 20, fontWeight: "800", color: "#FFFFFF", lineHeight: 26, letterSpacing: -0.3 },
+  bannerBtn: { flexDirection: "row", alignItems: "center", alignSelf: "flex-start", backgroundColor: "#05EAF7", paddingHorizontal: 18, paddingVertical: 10, borderRadius: 50, gap: 6 },
+  bannerBtnText: { fontSize: 13, fontWeight: "800", color: "#010128" },
+  bannerRight: { flex: 1, height: "100%", justifyContent: "flex-end", alignItems: "flex-end", position: "relative", zIndex: 1 },
+  bannerMascotImg: { width: 165, height: 185, position: "absolute", bottom: -10, right: -15 },
   section: { marginBottom: 28 },
   sectionHeader: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingHorizontal: 20, marginBottom: 14 },
   sectionTitle: { fontSize: 20, fontWeight: "800", color: "#101720", letterSpacing: -0.4 },
