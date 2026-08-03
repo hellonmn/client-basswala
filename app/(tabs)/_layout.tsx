@@ -2,6 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 import React, { useEffect, useRef } from "react";
 import { Animated, Dimensions, Platform, Pressable, StyleSheet, Text, useWindowDimensions, View } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { useChat } from "../../context/ChatContext";
 import * as Haptics from "expo-haptics";
 
@@ -23,11 +24,10 @@ const BAR_H = 74;
 const BAR_SIDE_PAD = 16;
 const BAR_WIDTH = Math.min(SCREEN_WIDTH - BAR_SIDE_PAD * 2, 480);
 
-// Active Tab Palette matching Official Basswala Cyan & Silver Branding (#05EAF7)
-const ACTIVE_ACCENT = "#00A8B5"; // Rich Vibrant Cyan for max contrast
-const ACTIVE_BG_TINT = "rgba(5, 234, 247, 0.15)"; // Soft Cyan Pill Background
-const ACTIVE_BORDER = "rgba(5, 234, 247, 0.4)"; // Cyan Pill Rim Border
-const INACTIVE_COLOR = "#64748B"; // Silver / Slate Inactive color
+// Basswala Cyan to White Branding Colors
+const CYAN_BRAND = "#05EAF7";
+const ACTIVE_TEXT_COLOR = "#008B99";
+const INACTIVE_COLOR = "#64748B";
 
 function TabButton({
   tab,
@@ -66,15 +66,6 @@ function TabButton({
     onPress();
   };
 
-  const pillBg = pillBgAnim.interpolate({
-    inputRange: [0, 1],
-    outputRange: ["rgba(0, 0, 0, 0)", ACTIVE_BG_TINT],
-  });
-  const pillBorder = pillBgAnim.interpolate({
-    inputRange: [0, 1],
-    outputRange: ["rgba(0, 0, 0, 0)", ACTIVE_BORDER],
-  });
-
   return (
     <Pressable 
       onPress={handlePress} 
@@ -83,19 +74,39 @@ function TabButton({
       android_ripple={null}
     >
       <Animated.View style={[styles.tabContent, { transform: [{ scale: scaleAnim }] }]}>
-        {/* Icon Container Pill with Cyan Rim */}
-        <Animated.View style={[styles.iconPill, { backgroundColor: pillBg, borderColor: pillBorder, borderWidth: 1 }]}>
-          <Ionicons
-            name={(isFocused ? tab.icon : tab.iconOutline) as any}
-            size={22}
-            color={isFocused ? ACTIVE_ACCENT : INACTIVE_COLOR}
-          />
-          {badge != null && badge > 0 && (
-            <View style={styles.tabBadge}>
-              <Text style={styles.tabBadgeText}>{badge > 99 ? "99+" : badge}</Text>
-            </View>
-          )}
-        </Animated.View>
+        {/* Icon Container Pill with Cyan to White Gradient */}
+        {isFocused ? (
+          <LinearGradient
+            colors={["#05EAF7", "#E0FAFC"]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.iconPillActive}
+          >
+            <Ionicons
+              name={tab.icon as any}
+              size={22}
+              color="#02023E"
+            />
+            {badge != null && badge > 0 && (
+              <View style={styles.tabBadge}>
+                <Text style={styles.tabBadgeText}>{badge > 99 ? "99+" : badge}</Text>
+              </View>
+            )}
+          </LinearGradient>
+        ) : (
+          <View style={styles.iconPillInactive}>
+            <Ionicons
+              name={tab.iconOutline as any}
+              size={22}
+              color={INACTIVE_COLOR}
+            />
+            {badge != null && badge > 0 && (
+              <View style={styles.tabBadge}>
+                <Text style={styles.tabBadgeText}>{badge > 99 ? "99+" : badge}</Text>
+              </View>
+            )}
+          </View>
+        )}
 
         {/* Tab Text Label */}
         <Text
@@ -118,7 +129,13 @@ function CustomTabBar({ state, navigation }: any) {
 
   return (
     <View style={styles.barWrapper} pointerEvents="box-none">
-      <View style={styles.barContainer}>
+      {/* Navbar Container with Cyan to White Gradient (#05EAF7 -> #F5F5F5 / #FFFFFF) */}
+      <LinearGradient
+        colors={["#E0FAFC", "#FFFFFF"]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={styles.barContainer}
+      >
         {state.routes.map((route: any, index: number) => {
           const isFocused = state.index === index;
           const tab = TABS.find(t => t.name === route.name) ?? TABS[0];
@@ -136,7 +153,7 @@ function CustomTabBar({ state, navigation }: any) {
             />
           );
         })}
-      </View>
+      </LinearGradient>
     </View>
   );
 }
@@ -172,13 +189,12 @@ const styles = StyleSheet.create({
     width: BAR_WIDTH,
     height: BAR_H,
     borderRadius: 36,
-    backgroundColor: "#FFFFFF",
-    borderWidth: 1,
-    borderColor: "#E2E8F0",
-    shadowColor: "#000000",
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.12,
-    shadowRadius: 20,
+    borderWidth: 1.5,
+    borderColor: "rgba(5, 234, 247, 0.35)",
+    shadowColor: "#05EAF7",
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.18,
+    shadowRadius: 18,
     elevation: 10,
     paddingHorizontal: 8,
   },
@@ -192,13 +208,29 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  iconPill: {
-    width: 46,
+  iconPillActive: {
+    width: 48,
     height: 32,
     borderRadius: 18,
     alignItems: "center",
     justifyContent: "center",
     position: "relative",
+    borderWidth: 1,
+    borderColor: "rgba(5, 234, 247, 0.6)",
+    shadowColor: CYAN_BRAND,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 6,
+    elevation: 3,
+  },
+  iconPillInactive: {
+    width: 48,
+    height: 32,
+    borderRadius: 18,
+    alignItems: "center",
+    justifyContent: "center",
+    position: "relative",
+    backgroundColor: "transparent",
   },
   tabLabel: {
     fontSize: 11,
@@ -206,7 +238,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   tabLabelActive: {
-    color: ACTIVE_ACCENT,
+    color: ACTIVE_TEXT_COLOR,
     fontWeight: "700",
   },
   tabLabelInactive: {
@@ -233,4 +265,5 @@ const styles = StyleSheet.create({
     fontSize: 9,
     fontWeight: "800",
   },
-});
+});
+
