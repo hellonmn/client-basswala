@@ -107,6 +107,17 @@ export default function SmartImage({
     );
   }
 
+  // Fallback to default Basswala DJ setup image for DJs and Equipment
+  if (kind === "dj" || kind === "equipment") {
+    return (
+      <Image
+        source={require("../assets/images/default-dj.jpg")}
+        style={style}
+        resizeMode="cover"
+      />
+    );
+  }
+
   const cfg = KIND_CONFIG[kind];
   const initial = (label?.[0] ?? "").toUpperCase();
 

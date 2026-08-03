@@ -960,22 +960,15 @@ export default function DJDetailScreen() {
                 if (typeof pfp === "string" && pfp.trim().length > 0) imgs = [pfp];
               }
 
-              // Still no image → show a single placeholder thumbnail
+              // Still no image → show the default Basswala DJ setup image
               if (imgs.length === 0) {
                 return (
                   <View style={styles.gallery}>
-                    <LinearGradient
-                      colors={dj.isAvailable ? ["#02023E", "#04c9ce", "#088786"] : ["#5a6169", "#3d4652"]}
+                    <Image
+                      source={require("../assets/images/default-dj.jpg")}
                       style={styles.galleryImg}
-                      start={{ x: 0, y: 0 }}
-                      end={{ x: 1, y: 1 }}
-                    >
-                      <View style={styles.placeholderInner}>
-                        <Ionicons name="musical-notes" size={64} color="rgba(255,255,255,0.85)" />
-                        <Text style={styles.placeholderText}>{dj.name}</Text>
-                        <Text style={styles.placeholderSub}>No photos uploaded</Text>
-                      </View>
-                    </LinearGradient>
+                      resizeMode="cover"
+                    />
                     <LinearGradient
                       colors={["transparent", "rgba(16,23,32,0.85)"]}
                       style={styles.galleryGrad}
