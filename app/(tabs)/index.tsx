@@ -1146,7 +1146,6 @@ export default function HomeScreen() {
                       contentContainerStyle={{ paddingHorizontal: 20, gap: 12 }}
                     >
                       {captains.map((c: any) => {
-                        const initial = (c.businessName?.[0] || c.user?.firstName?.[0] || "C").toUpperCase();
                         const saved = isCaptainSaved(c.id);
                         return (
                           <PressableScale
@@ -1155,67 +1154,67 @@ export default function HomeScreen() {
                             scaleTo={0.96}
                             onPress={() => router.push(`/captain/${c.id}` as any)}
                           >
-
-                            <View style={s.captainCardContainer}>
+                            {/* Avatar + Verified Badge */}
                             <View style={s.captainCardHeader}>
-                              {/* CaptainAvatar centralises the http-check + onError
-                                  fallback so a missing / 404 photo silently falls
-                                  back to initials instead of a broken icon. */}
                               <CaptainAvatar
                                 uri={c.profilePicture || c.user?.profilePicture || c.user?.avatar || c.avatar}
                                 name={c.businessName || c.user?.firstName || "Captain"}
-                                size={56}
-                                radius={18}
-                                textSize={24}
+                                size={52}
+                                radius={16}
+                                textSize={22}
                               />
-                              {/* (old inline avatar removed — handled by CaptainAvatar) */}
                               {c.isVerified && (
                                 <View style={s.captainVerified}>
-                                  <Ionicons name="checkmark" size={10} color="#fff" />
+                                  <Ionicons name="checkmark-circle" size={18} color="#22c55e" />
                                 </View>
                               )}
                             </View>
+
+                            {/* Name */}
                             <Text style={s.captainCardName} numberOfLines={1}>
                               {c.businessName || `${c.user?.firstName || ""} ${c.user?.lastName || ""}`.trim() || "Captain"}
                             </Text>
+
+                            {/* Location */}
                             {c.locationCity && (
                               <View style={s.captainCardLoc}>
                                 <Ionicons name="location-outline" size={10} color="#8696a0" />
                                 <Text style={s.captainCardLocText} numberOfLines={1}>{c.locationCity}</Text>
                               </View>
                             )}
+
+                            {/* Stats Row */}
                             <View style={s.captainCardStats}>
                               <View style={s.captainCardStat}>
-                                <Ionicons name="musical-notes-outline" size={11} color="#02023E" />
-                                <Text style={s.captainCardStatText}>{c.djCount || 0}</Text>
+                                <Ionicons name="musical-notes-outline" size={11} color="#05EAF7" />
+                                <Text style={s.captainCardStatText}>{c.djCount || 0} DJs</Text>
                               </View>
                               <View style={s.captainCardStatDiv} />
                               <View style={s.captainCardStat}>
-                                <Ionicons name="hardware-chip-outline" size={11} color="#f59e0b" />
+                                <Ionicons name="hardware-chip-outline" size={11} color="#05EAF7" />
                                 <Text style={s.captainCardStatText}>{c.equipmentCount || 0}</Text>
                               </View>
                             </View>
-                            </View>
 
+                            {/* Footer */}
                             <View style={s.captainCardFooter}>
                               <View style={s.captainCardFooterViewButton}>
-                                <Text style={s.captainCardFooterText}>View Profile</Text>
-                                {/* <Ionicons name="arrow-forward" size={11} color="#02023E" /> */}
+                                <Text style={s.captainCardFooterText}>View</Text>
                               </View>
                               <TouchableOpacity
-                              style={s.captainHeart}
-                              onPress={(e) => {
-                                e.stopPropagation();
-                                toggleCaptain(c.id);
-                              }}
-                              hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-                            >
-                              <Ionicons
-                                name={saved ? "heart" : "heart-outline"}
-                                size={16}
-                                color={saved ? "#ef4444" : "#8696a0"}
-                              />
-                            </TouchableOpacity>
+                                style={s.captainHeart}
+                                onPress={(e) => {
+                                  e.stopPropagation();
+                                  toggleCaptain(c.id);
+                                }}
+                                hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+                              >
+                                <Ionicons
+                                  name={saved ? "heart" : "heart-outline"}
+                                  size={15}
+                                  color={saved ? "#ef4444" : "#8696a0"}
+                                />
+                              </TouchableOpacity>
                             </View>
                           </PressableScale>
                         );
@@ -1459,37 +1458,36 @@ const s = StyleSheet.create({
 
   // Captain cards
   captainCard: {
-    
-    alignItems: "center",
-    position: "relative",
-  },
-  captainCardContainer: {
-    width: 150, 
+    width: 155,
     backgroundColor: "#fff",
     padding: 14,
-    borderRadius: 18, 
-    borderWidth: 1, borderColor: "#eef0f3", 
-    position: "relative",
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: "#e8ecf1",
     alignItems: "center",
+    shadowColor: "#101720",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.06,
+    shadowRadius: 10,
+    elevation: 3,
   },
   captainHeart: {
-    width: 32, height: 32, borderRadius: 100,
+    width: 30, height: 30, borderRadius: 100,
     backgroundColor: "#f8fafc",
     alignItems: "center", justifyContent: "center",
-    borderWidth: 1, borderColor: "#eaeaea",
-    zIndex: 2,
+    borderWidth: 1, borderColor: "#e8ecf1",
   },
   captainCardHeader: { position: "relative", marginBottom: 10 },
   captainCardAvatar: {
-    width: 62, height: 62, borderRadius: 20,
+    width: 52, height: 52, borderRadius: 16,
     alignItems: "center", justifyContent: "center",
   },
-  captainCardAvatarText: { fontSize: 24, fontWeight: "800", color: "#fff" },
+  captainCardAvatarText: { fontSize: 22, fontWeight: "800", color: "#fff" },
   captainVerified: {
-    position: "absolute", bottom: -2, right: -2,
-    width: 20, height: 20, borderRadius: 10, backgroundColor: "#02023E",
+    position: "absolute", bottom: -3, right: -3,
+    width: 20, height: 20, borderRadius: 10, backgroundColor: "#fff",
     alignItems: "center", justifyContent: "center",
-    borderWidth: 2, borderColor: "#fff",
+    borderWidth: 0,
   },
   captainCardName: {
     fontSize: 13, fontWeight: "800", color: "#101720",
@@ -1498,25 +1496,25 @@ const s = StyleSheet.create({
   captainCardLoc: { flexDirection: "row", alignItems: "center", gap: 2, marginTop: 3 },
   captainCardLocText: { fontSize: 10, color: "#8696a0", fontWeight: "500", maxWidth: 100 },
   captainCardStats: {
-    flexDirection: "row", alignItems: "center", gap: 10,
-    marginTop: 10, backgroundColor: "#f8fafc", borderRadius: 10,
+    flexDirection: "row", alignItems: "center", gap: 8,
+    marginTop: 10, backgroundColor: "#f4f8ff", borderRadius: 10,
     paddingHorizontal: 10, paddingVertical: 6,
-    borderWidth: 1, borderColor: "#eef0f3",
+    borderWidth: 1, borderColor: "#e8ecf1",
   },
   captainCardStat: { flexDirection: "row", alignItems: "center", gap: 3 },
-  captainCardStatText: { fontSize: 11, fontWeight: "800", color: "#101720" },
-  captainCardStatDiv: { width: 1, height: 12, backgroundColor: "#eef0f3" },
+  captainCardStatText: { fontSize: 10, fontWeight: "700", color: "#101720" },
+  captainCardStatDiv: { width: 1, height: 12, backgroundColor: "#dde3ea" },
   captainCardFooter: {
-    flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 3,
-    marginTop: 10, width: 150, 
+    flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 6,
+    marginTop: 10, width: "100%",
   },
   captainCardFooterViewButton: {
-    flexDirection: "row", alignItems: "center", justifyContent: "center", textAlign: "center", gap: 3, width: 100,
-    backgroundColor: "#101720", padding: 8, borderWidth: 1, borderColor: "#eef0f3", borderRadius: 100
+    flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 3,
+    backgroundColor: "#02023E", paddingVertical: 8, borderRadius: 100,
   },
   captainCardFooterLikeButton: {
-    flexDirection: "row", alignItems: "center", justifyContent: "center", textAlign: "center", gap: 3,
-    backgroundColor: "#ffffff", padding: 8, borderWidth: 1, borderColor: "#eef0f3", borderRadius: 100
+    flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 3,
+    backgroundColor: "#ffffff", padding: 8, borderWidth: 1, borderColor: "#e8ecf1", borderRadius: 100
   },
   captainCardFooterText: { fontSize: 11, textAlign: "center", fontWeight: "700", color: "#ffffff" },
   greetingRow: { paddingHorizontal: 20, paddingTop: 2, paddingBottom: 14 },
