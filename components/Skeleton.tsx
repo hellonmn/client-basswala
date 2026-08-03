@@ -74,12 +74,12 @@ export function CaptainCardSkeleton() {
 
 const sk = StyleSheet.create({
   featured: {
-    height: 264,
-    borderRadius: 22,
+    height: 215,
+    borderRadius: 20,
     backgroundColor: "#fff",
     borderWidth: 1,
     borderColor: "#e4e9f1",
-    padding: 14,
+    padding: 12,
     justifyContent: "flex-end",
   },
   captain: {
