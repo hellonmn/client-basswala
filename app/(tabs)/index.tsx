@@ -720,7 +720,15 @@ export default function HomeScreen() {
 
       if (djRes.status === "fulfilled" && djRes.value?.success) {
         const djList = Array.isArray(djRes.value.data) ? djRes.value.data : [];
-        const mapped = djList.map(mapDJToEquipment);
+        let mapped = djList.map(mapDJToEquipment);
+
+        // Position DJ Priya Sharma at the 3rd card spot in the carousel (index 2)
+        const priyaIdx = mapped.findIndex((d) => d.name.toLowerCase().includes("priya"));
+        if (priyaIdx !== -1 && mapped.length >= 3) {
+          const [priya] = mapped.splice(priyaIdx, 1);
+          mapped.splice(2, 0, priya);
+        }
+
         setFeaturedDJs(mapped.slice(0, 5));
         setPopularDJs(mapped.slice(0, 6));
       }
@@ -979,7 +987,7 @@ export default function HomeScreen() {
                         <View style={s.bannerBadge}>
                           <Text style={s.bannerBadgeText}>QUICK BOOKING</Text>
                         </View>
-                        <Text style={s.bannerText}>Book a DJ & Sound{"\n"}in three taps</Text>
+                        <Text style={s.bannerText}>Book your DJ in{"\n"}three taps</Text>
                         <TouchableOpacity style={s.bannerBtn} activeOpacity={0.85} onPress={() => switchTab("dj")}>
                           <Text style={s.bannerBtnText}>Start Booking</Text>
                           <Ionicons name="arrow-forward" size={15} color="#010128" />
@@ -1090,7 +1098,7 @@ export default function HomeScreen() {
                             <TouchableOpacity
                               style={[s.featuredBookBtn, {
                                 backgroundColor: item.available
-                                  ? "#04c9ce"
+                                  ? "#01011A"
                                   : "rgba(255,255,255,0.15)"
                               }]}
                               disabled={!item.available}
@@ -1100,7 +1108,7 @@ export default function HomeScreen() {
                               <Ionicons
                                 name="calendar-outline"
                                 size={13}
-                                color={item.available ? "#fff" : "rgba(255,255,255,0.4)"}
+                                color={item.available ? "#05EAF7" : "rgba(255,255,255,0.4)"}
                               />
                               <Text style={[s.featuredBookBtnText, !item.available && { color: "rgba(255,255,255,0.4)" }]}>
                                 {item.available ? "Book Now" : "Unavailable"}
@@ -1583,8 +1591,8 @@ const s = StyleSheet.create({
   reviewsOverlay: { fontSize: 9.5, color: "rgba(255,255,255,0.6)" },
   priceOverlay: { fontSize: 14, fontWeight: "800", color: "#05EAF7" },
   priceOverlayUnit: { fontSize: 9, fontWeight: "600", color: "rgba(255,255,255,0.7)" },
-  featuredBookBtn: { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 5, paddingVertical: 7, borderRadius: 12 },
-  featuredBookBtnText: { fontSize: 11, fontWeight: "800", color: "#010128" },
+  featuredBookBtn: { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 5, paddingVertical: 7, borderRadius: 12, borderWidth: 1, borderColor: "rgba(5, 234, 247, 0.4)" },
+  featuredBookBtnText: { fontSize: 11, fontWeight: "800", color: "#FFFFFF" },
   tagPill: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 6, backgroundColor: "rgba(5, 234, 247, 0.2)", borderWidth: 1, borderColor: "rgba(5, 234, 247, 0.6)" },
   tagPillText: { fontSize: 9, fontWeight: "800", color: "#05EAF7", letterSpacing: 0.2 },
   heartBtn: { width: 28, height: 28, borderRadius: 10, backgroundColor: "rgba(1, 1, 40, 0.6)", justifyContent: "center", alignItems: "center" },
