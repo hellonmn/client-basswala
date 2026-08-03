@@ -842,7 +842,12 @@ export default function HomeScreen() {
           <Animated.View style={[{ flex: 1 }]}>
 
             {/* Header */}
-            <View style={s.header}>
+            <LinearGradient
+              colors={["#FFFFFF", "#E6F5FF"]}
+              start={{ x: 0, y: 0.15 }}
+              end={{ x: 1, y: 1 }}
+              style={s.header}
+            >
               <TouchableOpacity
                 style={s.avatarBtn}
                 onPress={() => router.push("/(tabs)/profile" as any)}
@@ -852,8 +857,10 @@ export default function HomeScreen() {
                   uri={user?.profilePicture}
                   firstName={user?.firstName}
                   lastName={user?.lastName}
-                  size={40}
-                  radius={14}
+                  size={56}
+                  radius={28}
+                  borderWidth={2}
+                  borderColor="#FFFFFF"
                 />
                 <View style={s.onlineDot} />
               </TouchableOpacity>
@@ -862,13 +869,12 @@ export default function HomeScreen() {
                 onPress={() => setIsLocationSheetVisible(true)}
                 activeOpacity={0.7}
               >
-                <Text style={s.locationLabel}>LOCATION</Text>
                 <View style={s.locationRow}>
-                  <Ionicons name="location" size={15} color="#02023E" />
+                  <Ionicons name="location" size={24} color="#09095F" />
                   <Text style={s.locationText} numberOfLines={1}>
                     {location?.area || location?.city || "Select Location"}
                   </Text>
-                  <Ionicons name="chevron-down" size={16} color="#8696a0" />
+                  <Ionicons name="chevron-down" size={22} color="#667085" />
                 </View>
               </TouchableOpacity>
               <TouchableOpacity
@@ -876,14 +882,14 @@ export default function HomeScreen() {
                 onPress={() => router.push("/cart" as any)}
                 activeOpacity={0.8}
               >
-                <Ionicons name="cart-outline" size={22} color="#101720" />
+                <Ionicons name="cart-outline" size={30} color="#09095F" />
                 {cartItemCount > 0 && (
                   <View style={s.cartBadge}>
                     <Text style={s.cartBadgeText}>{cartItemCount}</Text>
                   </View>
                 )}
               </TouchableOpacity>
-            </View>
+            </LinearGradient>
 
             {/* Greeting */}
             <View style={s.greetingRow}>
@@ -1437,15 +1443,19 @@ export default function HomeScreen() {
 const s = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#f4f8ff" },
   scrollContent: { paddingBottom: 120 },
-  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingVertical: 10, gap: 12 },
+  header: {
+    flexDirection: "row", alignItems: "center", height: 92, marginHorizontal: 18, marginTop: 4,
+    paddingLeft: 20, paddingRight: 12, borderRadius: 46, gap: 14,
+    borderWidth: 1, borderColor: "#D7E8F7", shadowColor: "#617B92", shadowOpacity: 0.16,
+    shadowRadius: 16, shadowOffset: { width: 0, height: 7 }, elevation: 5,
+  },
   avatarBtn: { position: "relative" },
   avatar: { width: 40, height: 40, borderRadius: 14, backgroundColor: "#e5e7eb" },
-  onlineDot: { position: "absolute", bottom: 1, right: 1, width: 9, height: 9, borderRadius: 5, backgroundColor: "#22c55e", borderWidth: 2, borderColor: "#f4f8ff" },
-  locationBtn: { flex: 1, alignItems: "center" },
-  locationLabel: { fontSize: 9, color: "#8696a0", fontWeight: "700", letterSpacing: 1, marginBottom: 2 },
-  locationRow: { flexDirection: "row", alignItems: "center", gap: 4 },
-  locationText: { fontSize: 14, fontWeight: "700", color: "#101720", maxWidth: width - 220 },
-  notifBtn: { width: 40, height: 40, borderRadius: 13, backgroundColor: "#fff", justifyContent: "center", alignItems: "center", position: "relative", shadowColor: "#000", shadowOpacity: 0.06, shadowRadius: 8, shadowOffset: { width: 0, height: 2 }, elevation: 2 },
+  onlineDot: { position: "absolute", bottom: 1, right: 1, width: 13, height: 13, borderRadius: 7, backgroundColor: "#18D978", borderWidth: 2.5, borderColor: "#FFFFFF" },
+  locationBtn: { flex: 1, alignItems: "center", justifyContent: "center", minWidth: 0 },
+  locationRow: { flexDirection: "row", alignItems: "center", gap: 9 },
+  locationText: { fontSize: 18, fontWeight: "600", color: "#252525", maxWidth: width - 230 },
+  notifBtn: { width: 64, height: 64, borderRadius: 32, backgroundColor: "#FFFFFF", justifyContent: "center", alignItems: "center", position: "relative", borderWidth: 1, borderColor: "#D9E8F7", shadowColor: "#6B8196", shadowOpacity: 0.18, shadowRadius: 10, shadowOffset: { width: 0, height: 4 }, elevation: 4 },
   notifDot: { position: "absolute", top: 8, right: 8, width: 7, height: 7, borderRadius: 4, backgroundColor: "#02023E", borderWidth: 1.5, borderColor: "#fff" },
   cartBadge: {
     position: "absolute", top: -4, right: -4,
