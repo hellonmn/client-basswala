@@ -1,9 +1,8 @@
-﻿import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity,
   TextInput,
   FlatList,
   ActivityIndicator,
@@ -11,6 +10,8 @@ import {
 import BottomSheet, { BottomSheetBackdrop, BottomSheetView } from '@gorhom/bottom-sheet';
 import { Ionicons } from '@expo/vector-icons';
 import { useLocation } from '@/context/LocationContext';
+import PressableScale from './PressableScale';
+import { BORDER_RADIUS, COLORS, FONT_SIZES, FONT_WEIGHTS, SHADOWS, SPACING } from '../constants/theme';
 
 interface LocationBottomSheetProps {
   isVisible: boolean;
@@ -38,7 +39,6 @@ export default function LocationBottomSheet({ isVisible, onClose }: LocationBott
   
   const { getCurrentLocation, setManualLocation } = useLocation();
 
-  // Control bottom sheet visibility
   useEffect(() => {
     if (isVisible) {
       bottomSheetRef.current?.snapToIndex(0);
@@ -71,7 +71,7 @@ export default function LocationBottomSheet({ isVisible, onClose }: LocationBott
         {...props}
         disappearsOnIndex={-1}
         appearsOnIndex={0}
-        opacity={0.5}
+        opacity={0.4}
         pressBehavior="close"
       />
     ),
@@ -97,44 +97,49 @@ export default function LocationBottomSheet({ isVisible, onClose }: LocationBott
         {/* Header */}
         <View style={styles.header}>
           <Text style={styles.title}>Select Location</Text>
-          <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-            <Ionicons name="close" size={24} color="#101720" />
-          </TouchableOpacity>
+          <PressableScale onPress={onClose} style={styles.closeButton}>
+            <Ionicons name="close" size={20} color={COLORS.text} />
+          </PressableScale>
         </View>
 
         {/* Current Location Button */}
-        <TouchableOpacity 
+        <PressableScale 
           style={styles.detectButton}
           onPress={handleDetectLocation}
           disabled={isDetecting}
-          activeOpacity={0.7}
+          scaleTo={0.98}
         >
           <View style={styles.detectIcon}>
-            <Ionicons name="navigate" size={20} color="#02023E" />
+            <Ionicons name="navigate" size={18} color={COLORS.primary} />
           </View>
           <View style={styles.detectText}>
             <Text style={styles.detectTitle}>
-              {isDetecting ? 'Detecting...' : 'Use Current Location'}
+              {isDetecting ? 'Detecting Location...' : 'Use Current Location'}
             </Text>
-            <Text style={styles.detectSubtitle}>Using GPS</Text>
+            <Text style={styles.detectSubtitle}>Using precise GPS</Text>
           </View>
           {isDetecting ? (
-            <ActivityIndicator size="small" color="#02023E" />
+            <ActivityIndicator size="small" color={COLORS.primary} />
           ) : (
-            <Ionicons name="chevron-forward" size={20} color="#8696a0" />
+            <Ionicons name="chevron-forward" size={18} color={COLORS.textMuted} />
           )}
-        </TouchableOpacity>
+        </PressableScale>
 
-        {/* Search */}
+        {/* Search Input */}
         <View style={styles.searchContainer}>
-          <Ionicons name="search-outline" size={20} color="#8696a0" />
+          <Ionicons name="search-outline" size={18} color={COLORS.textMuted} />
           <TextInput
             style={styles.searchInput}
             placeholder="Search for area, street name..."
-            placeholderTextColor="#8696a0"
+            placeholderTextColor={COLORS.textMuted}
             value={searchQuery}
             onChangeText={setSearchQuery}
           />
+          {searchQuery.length > 0 && (
+            <PressableScale onPress={() => setSearchQuery('')}>
+              <Ionicons name="close-circle" size={18} color={COLORS.textMuted} />
+            </PressableScale>
+          )}
         </View>
 
         {/* Saved Locations */}
@@ -142,17 +147,17 @@ export default function LocationBottomSheet({ isVisible, onClose }: LocationBott
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>SAVED LOCATIONS</Text>
             {savedLocations.map((location) => (
-              <TouchableOpacity
+              <PressableScale
                 key={location.id}
                 style={styles.locationItem}
                 onPress={() => handleSelectLocation(location)}
-                activeOpacity={0.7}
+                scaleTo={0.98}
               >
                 <View style={styles.locationIcon}>
                   <Ionicons 
                     name={location.type === 'Home' ? 'home' : 'briefcase'} 
-                    size={20} 
-                    color="#02023E" 
+                    size={18} 
+                    color={COLORS.primary} 
                   />
                 </View>
                 <View style={styles.locationInfo}>
@@ -161,14 +166,14 @@ export default function LocationBottomSheet({ isVisible, onClose }: LocationBott
                     {location.address}
                   </Text>
                 </View>
-                <Ionicons name="chevron-forward" size={20} color="#8696a0" />
-              </TouchableOpacity>
+                <Ionicons name="chevron-forward" size={18} color={COLORS.textMuted} />
+              </PressableScale>
             ))}
           </View>
         )}
 
         {/* Nearby Areas */}
-        <View style={styles.section}>
+        <View style={styles.sectionFlex}>
           <Text style={styles.sectionTitle}>
             {searchQuery ? 'SEARCH RESULTS' : 'NEARBY AREAS'}
           </Text>
@@ -176,20 +181,20 @@ export default function LocationBottomSheet({ isVisible, onClose }: LocationBott
             data={filteredAreas}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
-              <TouchableOpacity
+              <PressableScale
                 style={styles.areaItem}
                 onPress={() => handleSelectLocation(item)}
-                activeOpacity={0.7}
+                scaleTo={0.98}
               >
                 <View style={styles.areaIcon}>
-                  <Ionicons name="location-outline" size={20} color="#8696a0" />
+                  <Ionicons name="location-outline" size={18} color={COLORS.primary} />
                 </View>
                 <View style={styles.areaInfo}>
                   <Text style={styles.areaName}>{item.name}</Text>
                   <Text style={styles.areaCity}>{item.city}</Text>
                 </View>
                 <Text style={styles.areaDistance}>{item.distance}</Text>
-              </TouchableOpacity>
+              </PressableScale>
             )}
             showsVerticalScrollIndicator={false}
           />
@@ -201,155 +206,169 @@ export default function LocationBottomSheet({ isVisible, onClose }: LocationBott
 
 const styles = StyleSheet.create({
   bottomSheetBackground: {
-    backgroundColor: '#ffffff',
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
+    backgroundColor: COLORS.background,
+    borderTopLeftRadius: BORDER_RADIUS.xl,
+    borderTopRightRadius: BORDER_RADIUS.xl,
   },
   handleIndicator: {
-    backgroundColor: '#e5e7eb',
-    width: 40,
+    backgroundColor: COLORS.border,
+    width: 36,
+    height: 4,
   },
   container: {
     flex: 1,
-    paddingHorizontal: 20,
+    paddingHorizontal: SPACING.md + 4,
+    paddingTop: SPACING.xs,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: SPACING.md,
   },
   title: {
-    fontSize: 22,
-    fontWeight: '700',
-    color: '#101720',
+    fontSize: FONT_SIZES.xl,
+    fontWeight: FONT_WEIGHTS.bold,
+    color: COLORS.text,
   },
   closeButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: '#f8f9fa',
+    width: 36,
+    height: 36,
+    borderRadius: BORDER_RADIUS.round,
+    backgroundColor: COLORS.backgroundSubtle,
     justifyContent: 'center',
     alignItems: 'center',
   },
   detectButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#f0fffe',
-    padding: 16,
-    borderRadius: 14,
-    marginBottom: 20,
+    backgroundColor: COLORS.accentLight,
+    padding: SPACING.md,
+    borderRadius: BORDER_RADIUS.lg,
+    marginBottom: SPACING.md,
     borderWidth: 1,
-    borderColor: '#02023E',
+    borderColor: 'rgba(6, 243, 249, 0.4)',
+    ...SHADOWS.soft,
   },
   detectIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: '#ffffff',
+    width: 36,
+    height: 36,
+    borderRadius: BORDER_RADIUS.round,
+    backgroundColor: COLORS.background,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 12,
+    marginRight: SPACING.sm + 4,
   },
   detectText: {
     flex: 1,
   },
   detectTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#101720',
-    marginBottom: 2,
+    fontSize: FONT_SIZES.md,
+    fontWeight: FONT_WEIGHTS.bold,
+    color: COLORS.primaryDark,
   },
   detectSubtitle: {
-    fontSize: 13,
-    color: '#8696a0',
+    fontSize: FONT_SIZES.xs,
+    color: COLORS.textSecondary,
+    marginTop: 1,
   },
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#f8f9fa',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderRadius: 14,
-    marginBottom: 24,
-    gap: 12,
+    backgroundColor: COLORS.backgroundSubtle,
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.sm + 2,
+    borderRadius: BORDER_RADIUS.lg,
+    marginBottom: SPACING.md,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+    gap: SPACING.sm,
   },
   searchInput: {
     flex: 1,
-    fontSize: 15,
-    color: '#101720',
+    fontSize: FONT_SIZES.md,
+    color: COLORS.text,
   },
   section: {
-    marginBottom: 24,
+    marginBottom: SPACING.md,
+  },
+  sectionFlex: {
+    flex: 1,
+    marginBottom: SPACING.md,
   },
   sectionTitle: {
-    fontSize: 12,
-    fontWeight: '700',
-    color: '#8696a0',
-    marginBottom: 12,
-    letterSpacing: 0.5,
+    fontSize: FONT_SIZES.xs,
+    fontWeight: FONT_WEIGHTS.bold,
+    color: COLORS.textMuted,
+    marginBottom: SPACING.sm,
+    letterSpacing: 0.6,
   },
   locationItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#f8f9fa',
+    padding: SPACING.md,
+    backgroundColor: COLORS.backgroundCard,
+    borderRadius: BORDER_RADIUS.lg,
+    marginBottom: SPACING.xs + 2,
+    borderWidth: 1,
+    borderColor: COLORS.borderLight,
+    ...SHADOWS.soft,
   },
   locationIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: '#f0fffe',
+    width: 34,
+    height: 34,
+    borderRadius: BORDER_RADIUS.round,
+    backgroundColor: COLORS.accentLight,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 12,
+    marginRight: SPACING.sm + 4,
   },
   locationInfo: {
     flex: 1,
   },
   locationType: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#101720',
-    marginBottom: 2,
+    fontSize: FONT_SIZES.md,
+    fontWeight: FONT_WEIGHTS.semibold,
+    color: COLORS.text,
   },
   locationAddress: {
-    fontSize: 13,
-    color: '#8696a0',
+    fontSize: FONT_SIZES.xs,
+    color: COLORS.textSecondary,
+    marginTop: 2,
   },
   areaItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 14,
+    paddingVertical: SPACING.md - 2,
+    paddingHorizontal: SPACING.sm,
     borderBottomWidth: 1,
-    borderBottomColor: '#f8f9fa',
+    borderBottomColor: COLORS.borderLight,
   },
   areaIcon: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: '#f8f9fa',
+    width: 32,
+    height: 32,
+    borderRadius: BORDER_RADIUS.round,
+    backgroundColor: COLORS.backgroundSubtle,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 12,
+    marginRight: SPACING.sm + 4,
   },
   areaInfo: {
     flex: 1,
   },
   areaName: {
-    fontSize: 15,
-    fontWeight: '600',
-    color: '#101720',
-    marginBottom: 2,
+    fontSize: FONT_SIZES.md,
+    fontWeight: FONT_WEIGHTS.semibold,
+    color: COLORS.text,
   },
   areaCity: {
-    fontSize: 13,
-    color: '#8696a0',
+    fontSize: FONT_SIZES.xs,
+    color: COLORS.textMuted,
+    marginTop: 1,
   },
   areaDistance: {
-    fontSize: 13,
-    color: '#8696a0',
-    fontWeight: '500',
+    fontSize: FONT_SIZES.xs,
+    color: COLORS.textSecondary,
+    fontWeight: FONT_WEIGHTS.medium,
   },
-});
+});
