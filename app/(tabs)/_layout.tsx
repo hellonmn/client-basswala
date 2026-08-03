@@ -189,8 +189,6 @@ const styles = StyleSheet.create({
     width: BAR_WIDTH,
     height: BAR_H,
     borderRadius: 36,
-    borderWidth: 1.5,
-    borderColor: "rgba(5, 234, 247, 0.35)",
     shadowColor: "#05EAF7",
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.18,
