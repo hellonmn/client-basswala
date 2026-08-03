@@ -8,54 +8,38 @@ export const COLORS = {
   primary: '#02023E',
   primaryDark: '#010128',
   primaryLight: '#1a1a5e',
-  primaryMuted: '#2a2a7e',
 
-  // Accent color - cyan, used for highlights/badges
+  // Accent color - cyan, used for highlights/badges sparingly
   accent: '#06f3f9',
-  accentLight: '#e0fcfd',
-  accentDark: '#00c4cb',
+  accentLight: '#a5f3fc',
 
   // Background colors
   background: '#ffffff',
   backgroundLight: '#f8f9fa',
-  backgroundCard: '#ffffff',
-  backgroundSubtle: '#f3f4f6',
-  glassBackground: 'rgba(255, 255, 255, 0.85)',
-  glassDark: 'rgba(2, 2, 62, 0.75)',
+  backgroundCard: '#f8f9fa',
 
   // Text colors
-  text: '#0f172a',
-  textSecondary: '#64748b',
-  textMuted: '#94a3b8',
-  textInverted: '#ffffff',
+  text: '#1f2937',
+  textSecondary: '#8696a0',
+  textMuted: '#6c7278',
 
-  // UI & Border colors
-  border: '#e2e8f0',
-  borderLight: '#f1f5f9',
-  borderFocus: '#02023E',
-  cardBorder: 'rgba(226, 232, 240, 0.8)',
-  divider: '#f1f5f9',
-  overlay: 'rgba(2, 2, 62, 0.4)',
+  // UI colors
+  border: '#e5e7eb',
+  divider: '#e5e7eb',
+  overlay: 'rgba(0, 0, 0, 0.5)',
 
   // Status colors
-  success: '#10b981',
-  successLight: '#d1fae5',
+  success: '#4CAF50',
   error: '#ef4444',
-  errorLight: '#fee2e2',
-  warning: '#f59e0b',
-  warningLight: '#fef3c7',
-  info: '#3b82f6',
-  infoLight: '#dbeafe',
+  warning: '#FFC107',
+  info: '#2196F3',
 
   // Gradient colors
   gradientStart: '#02023E',
-  gradientEnd: '#0d0d63',
-  accentGradientStart: '#06f3f9',
-  accentGradientEnd: '#3b82f6',
+  gradientEnd: '#1a1a5e',
 };
 
 export const SPACING = {
-  xxs: 2,
   xs: 4,
   sm: 8,
   md: 16,
@@ -69,9 +53,9 @@ export const FONT_SIZES = {
   sm: 14,
   md: 16,
   lg: 18,
-  xl: 22,
-  xxl: 28,
-  xxxl: 36,
+  xl: 24,
+  xxl: 32,
+  xxxl: 40,
 };
 
 export const FONT_WEIGHTS = {
@@ -82,63 +66,39 @@ export const FONT_WEIGHTS = {
 };
 
 export const BORDER_RADIUS = {
-  xs: 4,
   sm: 8,
   md: 12,
   lg: 16,
   xl: 24,
-  pill: 30,
   round: 9999,
 };
 
 export const SHADOWS = {
-  none: {
-    shadowColor: 'transparent',
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0,
-    shadowRadius: 0,
-    elevation: 0,
-  },
-  soft: {
-    shadowColor: '#02023E',
+  small: {
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.04,
-    shadowRadius: 6,
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
     elevation: 2,
   },
-  small: {
-    shadowColor: '#02023E',
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.08,
-    shadowRadius: 8,
-    elevation: 3,
-  },
   medium: {
-    shadowColor: '#02023E',
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.12,
-    shadowRadius: 12,
-    elevation: 6,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
+    elevation: 4,
   },
   large: {
-    shadowColor: '#02023E',
-    shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 0.16,
-    shadowRadius: 20,
-    elevation: 10,
-  },
-  floating: {
-    shadowColor: '#02023E',
-    shadowOffset: { width: 0, height: 14 },
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.2,
-    shadowRadius: 28,
-    elevation: 14,
+    shadowRadius: 16,
+    elevation: 8,
   },
 };
 
 export const ANIMATION = {
-  fast: 150,
-  normal: 250,
-  slow: 400,
+  fast: 200,
+  normal: 300,
+  slow: 500,
 };
-

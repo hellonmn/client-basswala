@@ -56,14 +56,14 @@ function TabButton({
   badge?: number;
 }) {
   const progress = useRef(new Animated.Value(isFocused ? 1 : 0)).current;
-  const squish = useRef(new Animated.Value(0)).current;
+  const squish = useRef(new Animated.Value(0)).current; // 0 = rest, 1 = squished/grabbed
 
   useEffect(() => {
     Animated.spring(progress, {
       toValue: isFocused ? 1 : 0,
       useNativeDriver: false,
-      tension: 140,
-      friction: 10,
+      tension: 130,
+      friction: 11,
     }).start();
   }, [isFocused]);
 
@@ -71,7 +71,7 @@ function TabButton({
     Animated.spring(squish, {
       toValue: 1,
       useNativeDriver: false,
-      tension: 220,
+      tension: 200, // Snap fast into deformation
       friction: 14,
     }).start();
   };
@@ -80,32 +80,39 @@ function TabButton({
     Animated.spring(squish, {
       toValue: 0,
       useNativeDriver: false,
-      tension: 160,
-      friction: 6,
+      tension: 150, // Bouncy spring back
+      friction: 5,   // Low friction = jelly jiggle!
     }).start();
   };
 
   const pillBg = progress.interpolate({
     inputRange: [0, 1],
-    outputRange: ["rgba(255, 255, 255, 0)", "rgba(2, 2, 62, 0.08)"],
+    outputRange: ["rgba(255, 255, 255, 0)", "rgba(255, 255, 255, 0.85)"], // BRIGHT FROSTED WHITE GLASS PILL
   });
   const pillBorderColor = progress.interpolate({
     inputRange: [0, 1],
-    outputRange: ["rgba(255, 255, 255, 0)", "rgba(2, 2, 62, 0.15)"],
+    outputRange: ["rgba(255, 255, 255, 0)", "rgba(255, 255, 255, 0.65)"], // GLOWING GLASS RIM
   });
-  const labelMaxW = progress.interpolate({ inputRange: [0, 1], outputRange: [0, 72] });
-  const labelOp = progress.interpolate({ inputRange: [0, 0.4, 1], outputRange: [0, 0, 1] });
-
+  const labelMaxW = progress.interpolate({ inputRange: [0, 1], outputRange: [0, 68] });
+  const labelOp = progress.interpolate({ inputRange: [0, 0.5, 1], outputRange: [0, 0, 1] });
+  
+  // Combine selection scale with press squish deformation
   const baseScale = progress.interpolate({ inputRange: [0, 1], outputRange: [0.94, 1] });
-
+  
   const scaleX = Animated.multiply(
     baseScale,
-    squish.interpolate({ inputRange: [0, 1], outputRange: [1, 1.12] })
+    squish.interpolate({ inputRange: [0, 1], outputRange: [1, 1.15] }) // Stretch wide
   );
   const scaleY = Animated.multiply(
     baseScale,
-    squish.interpolate({ inputRange: [0, 1], outputRange: [1, 0.85] })
+    squish.interpolate({ inputRange: [0, 1], outputRange: [1, 0.82] }) // Flatten thin
   );
+
+  // Interpolate icon and text colors between gray (inactive) and charcoal dark (active)
+  const contentColor = progress.interpolate({
+    inputRange: [0, 1],
+    outputRange: ["#8696a0", "#101720"], // MATCH SCENIC DARK LOGO/TEXT IN SCREENSHOT
+  });
 
   const handlePress = () => {
     try { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); } catch (_) {}
@@ -136,12 +143,12 @@ function TabButton({
           <Animated.View style={{ transform: [{ scale: 1 }] }}>
             <Ionicons
               name={(isFocused ? tab.icon : tab.iconOutline) as any}
-              size={21}
-              color={isFocused ? "#02023E" : "#8696a0"}
+              size={20}
+              color={isFocused ? "#101720" : "#8696a0"} // Native color fallback or static active
             />
           </Animated.View>
           <Animated.View style={{ maxWidth: labelMaxW, overflow: "hidden" }}>
-            <Animated.Text style={[styles.tabLabel, { opacity: labelOp, color: isFocused ? "#02023E" : "#8696a0" }]} numberOfLines={1}>
+            <Animated.Text style={[styles.tabLabel, { opacity: labelOp, color: contentColor }]} numberOfLines={1}>
               {" "}{tab.label}
             </Animated.Text>
           </Animated.View>

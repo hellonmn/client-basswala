@@ -1,20 +1,19 @@
 import React from 'react';
 import {
+  TouchableOpacity,
   Text,
   StyleSheet,
   ActivityIndicator,
   ViewStyle,
   TextStyle,
-  View,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import PressableScale from './PressableScale';
-import { COLORS, FONT_SIZES, FONT_WEIGHTS, BORDER_RADIUS, SHADOWS, SPACING } from '../constants/theme';
+import { COLORS, FONT_SIZES, FONT_WEIGHTS, BORDER_RADIUS } from '../constants/theme';
 
 interface ButtonProps {
   title: string;
   onPress: () => void;
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'accent' | 'danger';
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
   size?: 'small' | 'medium' | 'large';
   disabled?: boolean;
   loading?: boolean;
@@ -37,43 +36,26 @@ export const Button: React.FC<ButtonProps> = ({
   icon,
 }) => {
   const isPrimary = variant === 'primary';
-  const isAccent = variant === 'accent';
   const isDisabled = disabled || loading;
 
-  const getSpinnerColor = () => {
-    if (isPrimary || isAccent || variant === 'danger') return COLORS.textInverted;
-    return COLORS.primary;
-  };
-
-  const getTextColorStyle = () => {
-    if (isDisabled) return styles.textDisabled;
-    switch (variant) {
-      case 'primary':
-      case 'danger':
-        return styles.textInverted;
-      case 'accent':
-        return styles.textAccent;
-      case 'outline':
-      case 'ghost':
-        return styles.textOutline;
-      case 'secondary':
-      default:
-        return styles.textSecondary;
-    }
-  };
-
-  const buttonInnerContent = (
-    <View style={styles.contentRow}>
+  const buttonContent = (
+    <>
       {loading ? (
-        <ActivityIndicator color={getSpinnerColor()} size="small" />
+        <ActivityIndicator
+          color={variant === 'outline' || variant === 'ghost' ? COLORS.primary : COLORS.text}
+          size="small"
+        />
       ) : (
         <>
-          {icon && <View style={styles.iconWrapper}>{icon}</View>}
+          {icon && <>{icon}</>}
           <Text
             style={[
               styles.text,
               styles[`text${size.charAt(0).toUpperCase() + size.slice(1)}` as keyof typeof styles],
-              getTextColorStyle(),
+              variant === 'outline' && styles.textOutline,
+              variant === 'ghost' && styles.textGhost,
+              variant === 'secondary' && styles.textSecondary,
+              isDisabled && styles.textDisabled,
               textStyle,
             ]}
           >
@@ -81,18 +63,17 @@ export const Button: React.FC<ButtonProps> = ({
           </Text>
         </>
       )}
-    </View>
+    </>
   );
 
   if (isPrimary && !isDisabled) {
     return (
-      <PressableScale
+      <TouchableOpacity
         onPress={onPress}
         disabled={isDisabled}
-        scaleTo={0.96}
+        activeOpacity={0.8}
         style={[
           styles.container,
-          styles.shadowPrimary,
           styles[size],
           fullWidth && styles.fullWidth,
           style,
@@ -101,46 +82,20 @@ export const Button: React.FC<ButtonProps> = ({
         <LinearGradient
           colors={[COLORS.gradientStart, COLORS.gradientEnd]}
           start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
+          end={{ x: 1, y: 0 }}
           style={styles.gradient}
         >
-          {buttonInnerContent}
+          {buttonContent}
         </LinearGradient>
-      </PressableScale>
-    );
-  }
-
-  if (isAccent && !isDisabled) {
-    return (
-      <PressableScale
-        onPress={onPress}
-        disabled={isDisabled}
-        scaleTo={0.96}
-        style={[
-          styles.container,
-          styles.shadowAccent,
-          styles[size],
-          fullWidth && styles.fullWidth,
-          style,
-        ]}
-      >
-        <LinearGradient
-          colors={[COLORS.accentGradientStart, COLORS.accentGradientEnd]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={styles.gradient}
-        >
-          {buttonInnerContent}
-        </LinearGradient>
-      </PressableScale>
+      </TouchableOpacity>
     );
   }
 
   return (
-    <PressableScale
+    <TouchableOpacity
       onPress={onPress}
       disabled={isDisabled}
-      scaleTo={0.97}
+      activeOpacity={0.7}
       style={[
         styles.container,
         styles[size],
@@ -150,52 +105,34 @@ export const Button: React.FC<ButtonProps> = ({
         style,
       ]}
     >
-      {buttonInnerContent}
-    </PressableScale>
+      {buttonContent}
+    </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: BORDER_RADIUS.pill,
+    borderRadius: BORDER_RADIUS.round,
     overflow: 'hidden',
-  },
-  contentRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: SPACING.sm,
-  },
-  iconWrapper: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: COLORS.primary,
   },
   gradient: {
-    width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  shadowPrimary: {
-    ...SHADOWS.small,
-  },
-  shadowAccent: {
-    shadowColor: COLORS.accentDark,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.25,
-    shadowRadius: 8,
-    elevation: 4,
+    flexDirection: 'row',
+    gap: 8,
   },
   small: {
-    paddingHorizontal: SPACING.md,
-    paddingVertical: SPACING.sm + 2,
+    paddingHorizontal: 16,
+    paddingVertical: 10,
   },
   medium: {
-    paddingHorizontal: SPACING.lg,
-    paddingVertical: SPACING.md,
+    paddingHorizontal: 24,
+    paddingVertical: 16,
   },
   large: {
-    paddingHorizontal: SPACING.xl,
-    paddingVertical: SPACING.md + 4,
+    paddingHorizontal: 32,
+    paddingVertical: 20,
   },
   fullWidth: {
     width: '100%',
@@ -204,31 +141,24 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.primary,
   },
   secondary: {
-    backgroundColor: COLORS.backgroundSubtle,
-    borderWidth: 1,
-    borderColor: COLORS.border,
-  },
-  accent: {
-    backgroundColor: COLORS.accent,
+    backgroundColor: COLORS.backgroundCard,
   },
   outline: {
     backgroundColor: 'transparent',
-    borderWidth: 1.5,
+    borderWidth: 2,
     borderColor: COLORS.primary,
   },
   ghost: {
     backgroundColor: 'transparent',
   },
-  danger: {
-    backgroundColor: COLORS.error,
-  },
   disabled: {
-    backgroundColor: COLORS.borderLight,
-    opacity: 0.6,
+    backgroundColor: COLORS.backgroundCard,
+    opacity: 0.5,
   },
   text: {
     fontSize: FONT_SIZES.md,
     fontWeight: FONT_WEIGHTS.semibold,
+    color: COLORS.textLight,
     textAlign: 'center',
   },
   textSmall: {
@@ -240,14 +170,10 @@ const styles = StyleSheet.create({
   textLarge: {
     fontSize: FONT_SIZES.lg,
   },
-  textInverted: {
-    color: COLORS.textInverted,
-  },
-  textAccent: {
-    color: COLORS.primaryDark,
-    fontWeight: FONT_WEIGHTS.bold,
-  },
   textOutline: {
+    color: COLORS.primary,
+  },
+  textGhost: {
     color: COLORS.primary,
   },
   textSecondary: {
@@ -256,4 +182,4 @@ const styles = StyleSheet.create({
   textDisabled: {
     color: COLORS.textMuted,
   },
-});
+});

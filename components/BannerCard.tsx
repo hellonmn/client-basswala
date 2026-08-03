@@ -1,14 +1,27 @@
+/**
+ * components/BannerCard.tsx
+ *
+ * Shared promo-banner card used on both Home and Explore tabs. Pulls from
+ * the admin-managed Banner model (image + optional title / subtitle / CTA).
+ *
+ * Visual recipe:
+ *   - Image fills the card.
+ *   - A bottom gradient overlay guarantees text readability over any image.
+ *   - Title + subtitle stack on the left, CTA pill sits on the right.
+ *   - CTA pill uses the brand navy (#02023E) with white text — readable
+ *     contrast in every theme. (The old version used dark text on navy
+ *     background, which was unreadable.)
+ */
 import React from "react";
 import {
   Image,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
-import PressableScale from "./PressableScale";
-import { BORDER_RADIUS, COLORS, FONT_SIZES, FONT_WEIGHTS, SHADOWS, SPACING } from "../constants/theme";
 
 export interface BannerCardData {
   id: number;
@@ -26,22 +39,22 @@ interface Props {
   onPress?: () => void;
 }
 
-export default function BannerCard({ banner, width, height = 160, onPress }: Props) {
+export default function BannerCard({ banner, width, height = 150, onPress }: Props) {
   const hasOverlay = !!(banner.title || banner.subtitle || banner.ctaLabel);
   return (
-    <PressableScale
+    <TouchableOpacity
       style={[s.card, { width, height }]}
-      scaleTo={0.97}
-      disabled={!onPress}
+      activeOpacity={onPress ? 0.92 : 1}
       onPress={onPress}
     >
-      <Image source={{ uri: banner.imageUrl }} style={s.img} resizeMode="cover" />
+      <Image source={{ uri: banner.imageUrl }} style={s.img} />
 
       {hasOverlay && (
         <>
+          {/* Dark gradient bottom-up so any image still shows readable text */}
           <LinearGradient
-            colors={["rgba(2,2,62,0)", "rgba(2,2,62,0.6)", "rgba(2,2,62,0.9)"]}
-            locations={[0, 0.5, 1]}
+            colors={["rgba(0,0,0,0)", "rgba(2,2,30,0.65)", "rgba(2,2,30,0.85)"]}
+            locations={[0, 0.55, 1]}
             style={s.scrim}
             pointerEvents="none"
           />
@@ -57,73 +70,52 @@ export default function BannerCard({ banner, width, height = 160, onPress }: Pro
             {banner.ctaLabel ? (
               <View style={s.cta}>
                 <Text style={s.ctaText}>{banner.ctaLabel}</Text>
-                <Ionicons name="arrow-forward-circle" size={16} color={COLORS.accent} />
+                <Ionicons name="arrow-forward" size={12} color="#fff" />
               </View>
             ) : null}
           </View>
         </>
       )}
-    </PressableScale>
+    </TouchableOpacity>
   );
 }
 
 const s = StyleSheet.create({
   card: {
-    borderRadius: BORDER_RADIUS.xl,
+    borderRadius: 18,
     overflow: "hidden",
-    backgroundColor: COLORS.primaryDark,
-    ...SHADOWS.medium,
+    backgroundColor: "#0F1626",
   },
   img: { ...StyleSheet.absoluteFillObject, width: "100%", height: "100%" },
   scrim: {
     position: "absolute",
-    left: 0,
-    right: 0,
-    bottom: 0,
-    height: "75%",
+    left: 0, right: 0, bottom: 0,
+    height: "70%",
   },
   overlay: {
     position: "absolute",
-    left: 0,
-    right: 0,
-    bottom: 0,
-    paddingHorizontal: SPACING.md + 2,
-    paddingVertical: SPACING.md,
+    left: 0, right: 0, bottom: 0,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
     flexDirection: "row",
     alignItems: "flex-end",
-    gap: SPACING.sm,
+    gap: 12,
   },
   textCol: { flex: 1 },
   title: {
-    fontSize: FONT_SIZES.lg,
-    fontWeight: FONT_WEIGHTS.bold,
-    color: COLORS.textInverted,
-    letterSpacing: -0.3,
+    fontSize: 17, fontWeight: "800", color: "#fff", letterSpacing: -0.3,
   },
   subtitle: {
-    fontSize: FONT_SIZES.xs,
-    color: "rgba(255, 255, 255, 0.88)",
-    fontWeight: FONT_WEIGHTS.medium,
-    marginTop: 2,
-    lineHeight: 16,
+    fontSize: 12.5, color: "rgba(255,255,255,0.92)",
+    fontWeight: "500", marginTop: 3, lineHeight: 17,
   },
   cta: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 6,
-    backgroundColor: COLORS.primary,
-    borderColor: 'rgba(6, 243, 249, 0.4)',
-    borderWidth: 1,
-    paddingHorizontal: 14,
-    paddingVertical: 8,
-    borderRadius: BORDER_RADIUS.pill,
-    ...SHADOWS.soft,
+    flexDirection: "row", alignItems: "center", gap: 6,
+    backgroundColor: "#02023E",
+    paddingHorizontal: 14, paddingVertical: 9,
+    borderRadius: 999,
   },
   ctaText: {
-    fontSize: FONT_SIZES.xs,
-    fontWeight: FONT_WEIGHTS.bold,
-    color: COLORS.textInverted,
-    letterSpacing: 0.2,
+    fontSize: 12, fontWeight: "800", color: "#fff", letterSpacing: 0.2,
   },
 });
-

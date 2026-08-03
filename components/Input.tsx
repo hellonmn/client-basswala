@@ -25,8 +25,6 @@ export const Input: React.FC<InputProps> = ({
   rightIcon,
   onRightIconPress,
   required = false,
-  onFocus,
-  onBlur,
   ...textInputProps
 }) => {
   const [isFocused, setIsFocused] = useState(false);
@@ -44,7 +42,7 @@ export const Input: React.FC<InputProps> = ({
         style={[
           styles.inputContainer,
           isFocused && styles.inputContainerFocused,
-          error ? styles.inputContainerError : null,
+          error && styles.inputContainerError,
         ]}
       >
         {icon && <View style={styles.iconContainer}>{icon}</View>}
@@ -53,14 +51,8 @@ export const Input: React.FC<InputProps> = ({
           {...textInputProps}
           style={[styles.input, textInputProps.style]}
           placeholderTextColor={COLORS.textMuted}
-          onFocus={(e) => {
-            setIsFocused(true);
-            onFocus?.(e);
-          }}
-          onBlur={(e) => {
-            setIsFocused(false);
-            onBlur?.(e);
-          }}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
         />
         
         {rightIcon && (
@@ -68,14 +60,13 @@ export const Input: React.FC<InputProps> = ({
             onPress={onRightIconPress}
             style={styles.rightIconContainer}
             disabled={!onRightIconPress}
-            activeOpacity={0.7}
           >
             {rightIcon}
           </TouchableOpacity>
         )}
       </View>
       
-      {error ? <Text style={styles.errorText}>{error}</Text> : null}
+      {error && <Text style={styles.errorText}>{error}</Text>}
     </View>
   );
 };
@@ -86,9 +77,9 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: FONT_SIZES.sm,
-    fontWeight: FONT_WEIGHTS.semibold,
+    fontWeight: FONT_WEIGHTS.medium,
     color: COLORS.text,
-    marginBottom: SPACING.xs + 2,
+    marginBottom: SPACING.sm,
   },
   required: {
     color: COLORS.error,
@@ -96,35 +87,26 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: COLORS.backgroundLight,
+    backgroundColor: 'transparent',
     borderRadius: BORDER_RADIUS.lg,
-    borderWidth: 1.5,
+    borderWidth: 2,
     borderColor: COLORS.border,
     paddingHorizontal: SPACING.md,
   },
   inputContainerFocused: {
     borderColor: COLORS.primary,
-    backgroundColor: COLORS.background,
-    shadowColor: COLORS.primary,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.08,
-    shadowRadius: 6,
-    elevation: 2,
   },
   inputContainerError: {
     borderColor: COLORS.error,
-    backgroundColor: COLORS.errorLight,
   },
   iconContainer: {
     marginRight: SPACING.sm,
-    justify: 'center',
-    alignItems: 'center',
   },
   input: {
     flex: 1,
     fontSize: FONT_SIZES.md,
     color: COLORS.text,
-    paddingVertical: SPACING.md - 2,
+    paddingVertical: SPACING.md,
   },
   rightIconContainer: {
     marginLeft: SPACING.sm,
@@ -133,8 +115,7 @@ const styles = StyleSheet.create({
   errorText: {
     fontSize: FONT_SIZES.xs,
     color: COLORS.error,
-    fontWeight: FONT_WEIGHTS.medium,
     marginTop: SPACING.xs,
     marginLeft: SPACING.xs,
   },
-});
+});
