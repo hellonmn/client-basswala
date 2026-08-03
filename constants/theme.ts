@@ -4,35 +4,43 @@
  */
 
 export const COLORS = {
-  // Primary colors - deep navy brand
+  // Official Basswala Cyan & Silver Brand Palette
+  brandCyan: '#05EAF7',
+  brandSilver: '#BFC7CF',
+  brandAccent: '#F5F5F5',
+  brandBackground: '#111111',
+  brandSurface: '#1A1A1A',
+
+  // Primary colors
   primary: '#02023E',
   primaryDark: '#010128',
   primaryLight: '#1a1a5e',
   primaryMuted: '#2a2a7e',
 
-  // Accent color - cyan, used for highlights/badges
-  accent: '#06f3f9',
-  accentLight: '#e0fcfd',
-  accentDark: '#00c4cb',
+  // Accent color - Official Cyan
+  accent: '#05EAF7',
+  accentLight: '#E0FAFC',
+  accentDark: '#00C4CB',
+  accentGlow: 'rgba(5, 234, 247, 0.4)',
 
   // Background colors
   background: '#ffffff',
   backgroundLight: '#f8f9fa',
   backgroundCard: '#ffffff',
   backgroundSubtle: '#f3f4f6',
-  glassBackground: 'rgba(255, 255, 255, 0.85)',
-  glassDark: 'rgba(2, 2, 62, 0.75)',
+  glassBackground: 'rgba(255, 255, 255, 0.95)',
+  glassDark: 'rgba(17, 17, 17, 0.85)',
 
   // Text colors
   text: '#0f172a',
-  textSecondary: '#64748b',
+  textSecondary: '#A6ADB4',
   textMuted: '#94a3b8',
   textInverted: '#ffffff',
 
   // UI & Border colors
   border: '#e2e8f0',
   borderLight: '#f1f5f9',
-  borderFocus: '#02023E',
+  borderFocus: '#05EAF7',
   cardBorder: 'rgba(226, 232, 240, 0.8)',
   divider: '#f1f5f9',
   overlay: 'rgba(2, 2, 62, 0.4)',
@@ -50,8 +58,8 @@ export const COLORS = {
   // Gradient colors
   gradientStart: '#02023E',
   gradientEnd: '#0d0d63',
-  accentGradientStart: '#06f3f9',
-  accentGradientEnd: '#3b82f6',
+  accentGradientStart: '#05EAF7',
+  accentGradientEnd: '#BFC7CF',
 };
 
 export const SPACING = {

@@ -23,10 +23,11 @@ const BAR_H = 74;
 const BAR_SIDE_PAD = 16;
 const BAR_WIDTH = Math.min(SCREEN_WIDTH - BAR_SIDE_PAD * 2, 480);
 
-// Active Tab Palette matching the reference image (Terracotta / Warm Orange Accent)
-const ACTIVE_ACCENT = "#E05328";
-const ACTIVE_BG_TINT = "#FFEFEA";
-const INACTIVE_COLOR = "#475569";
+// Active Tab Palette matching Official Basswala Cyan & Silver Branding (#05EAF7)
+const ACTIVE_ACCENT = "#00A8B5"; // Rich Vibrant Cyan for max contrast
+const ACTIVE_BG_TINT = "rgba(5, 234, 247, 0.15)"; // Soft Cyan Pill Background
+const ACTIVE_BORDER = "rgba(5, 234, 247, 0.4)"; // Cyan Pill Rim Border
+const INACTIVE_COLOR = "#64748B"; // Silver / Slate Inactive color
 
 function TabButton({
   tab,
@@ -69,6 +70,10 @@ function TabButton({
     inputRange: [0, 1],
     outputRange: ["rgba(0, 0, 0, 0)", ACTIVE_BG_TINT],
   });
+  const pillBorder = pillBgAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: ["rgba(0, 0, 0, 0)", ACTIVE_BORDER],
+  });
 
   return (
     <Pressable 
@@ -78,8 +83,8 @@ function TabButton({
       android_ripple={null}
     >
       <Animated.View style={[styles.tabContent, { transform: [{ scale: scaleAnim }] }]}>
-        {/* Icon Container Pill */}
-        <Animated.View style={[styles.iconPill, { backgroundColor: pillBg }]}>
+        {/* Icon Container Pill with Cyan Rim */}
+        <Animated.View style={[styles.iconPill, { backgroundColor: pillBg, borderColor: pillBorder, borderWidth: 1 }]}>
           <Ionicons
             name={(isFocused ? tab.icon : tab.iconOutline) as any}
             size={22}
