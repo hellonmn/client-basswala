@@ -25,8 +25,8 @@ const BAR_SIDE_PAD = 16;
 const BAR_WIDTH = Math.min(SCREEN_WIDTH - BAR_SIDE_PAD * 2, 480);
 
 // Basswala ice-blue brand colours
-const ACTIVE_TEXT_COLOR = "#09095F";
-const INACTIVE_COLOR = "#667085";
+const ACTIVE_TEXT_COLOR = "#1E3A8A";
+const INACTIVE_COLOR = "#6B7280";
 
 function TabButton({
   tab,
@@ -73,10 +73,10 @@ function TabButton({
       android_ripple={null}
     >
       <Animated.View style={[styles.tabContent, { transform: [{ scale: scaleAnim }] }]}>
-        {/* The navy pill keeps the active tab legible on the ice-blue bar. */}
+        {/* Primary blue and navy establish the active Basswala tab. */}
         {isFocused ? (
           <LinearGradient
-            colors={["#09095F", "#24247C"]}
+            colors={["#2563EB", "#1E3A8A"]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
             style={styles.iconPillActive}
@@ -128,9 +128,9 @@ function CustomTabBar({ state, navigation }: any) {
 
   return (
     <View style={styles.barWrapper} pointerEvents="box-none">
-      {/* Same white-to-ice-blue surface used by the Home header. */}
+      {/* Same white-to-soft-ice-blue surface used by the Home header. */}
       <LinearGradient
-        colors={["#FFFFFF", "#E6F5FF"]}
+        colors={["#FFFFFF", "#ECF5FB"]}
         start={{ x: 0, y: 0.15 }}
         end={{ x: 1, y: 1 }}
         style={styles.barContainer}
@@ -189,10 +189,10 @@ const styles = StyleSheet.create({
     height: BAR_H,
     borderRadius: 36,
     borderWidth: 1,
-    borderColor: "#D7E8F7",
-    shadowColor: "#617B92",
+    borderColor: "#DCEAF6",
+    shadowColor: "#1F2937",
     shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.16,
+    shadowOpacity: 0.08,
     shadowRadius: 18,
     elevation: 10,
     paddingHorizontal: 8,
@@ -215,8 +215,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     position: "relative",
     borderWidth: 1,
-    borderColor: "rgba(255, 255, 255, 0.25)",
-    shadowColor: "#09095F",
+    borderColor: "#22D3EE",
+    shadowColor: "#0F172A",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 6,

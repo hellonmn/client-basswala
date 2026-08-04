@@ -831,10 +831,10 @@ export default function HomeScreen() {
 
   return (
     <>
-      <StatusBar barStyle="dark-content" backgroundColor="#f4f8ff" />
+      <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
       <SafeAreaView style={s.container} edges={["top"]}>
         <LinearGradient
-          colors={["#f4f8ff", "#eef1f9", "#ffffff"]}
+          colors={["#FFFFFF", "#F8FAFC", "#FFFFFF"]}
           start={{ x: 0, y: 0 }}
           end={{ x: 0, y: 1 }}
           style={{ flex: 1 }}
@@ -843,7 +843,7 @@ export default function HomeScreen() {
 
             {/* Header */}
             <LinearGradient
-              colors={["#FFFFFF", "#E6F5FF"]}
+              colors={["#FFFFFF", "#ECF5FB"]}
               start={{ x: 0, y: 0.15 }}
               end={{ x: 1, y: 1 }}
               style={s.header}
@@ -870,11 +870,11 @@ export default function HomeScreen() {
                 activeOpacity={0.7}
               >
                 <View style={s.locationRow}>
-                  <Ionicons name="location" size={20} color="#09095F" />
+                  <Ionicons name="location" size={20} color="#1E3A8A" />
                   <Text style={s.locationText} numberOfLines={1}>
                     {location?.area || location?.city || "Select Location"}
                   </Text>
-                  <Ionicons name="chevron-down" size={18} color="#667085" />
+                  <Ionicons name="chevron-down" size={18} color="#6B7280" />
                 </View>
               </TouchableOpacity>
               <TouchableOpacity
@@ -882,7 +882,7 @@ export default function HomeScreen() {
                 onPress={() => router.push("/cart" as any)}
                 activeOpacity={0.8}
               >
-                <Ionicons name="cart-outline" size={25} color="#09095F" />
+                <Ionicons name="cart-outline" size={25} color="#1E3A8A" />
                 {cartItemCount > 0 && (
                   <View style={s.cartBadge}>
                     <Text style={s.cartBadgeText}>{cartItemCount}</Text>
@@ -1441,12 +1441,12 @@ export default function HomeScreen() {
 // ─── Styles ───────────────────────────────────────────────────────────────────
 
 const s = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#f4f8ff" },
+  container: { flex: 1, backgroundColor: "#FFFFFF" },
   scrollContent: { paddingBottom: 120 },
   header: {
     flexDirection: "row", alignItems: "center", height: 74, marginHorizontal: 18, marginTop: 1,
     paddingLeft: 14, paddingRight: 10, borderRadius: 37, gap: 12,
-    borderWidth: 1, borderColor: "#D7E8F7", shadowColor: "#617B92", shadowOpacity: 0.16,
+    borderWidth: 1, borderColor: "#DCEAF6", shadowColor: "#1F2937", shadowOpacity: 0.08,
     shadowRadius: 16, shadowOffset: { width: 0, height: 7 }, elevation: 5,
   },
   avatarBtn: { position: "relative" },
@@ -1454,8 +1454,8 @@ const s = StyleSheet.create({
   onlineDot: { position: "absolute", bottom: 0, right: 0, width: 11, height: 11, borderRadius: 6, backgroundColor: "#18D978", borderWidth: 2, borderColor: "#FFFFFF" },
   locationBtn: { flex: 1, alignItems: "center", justifyContent: "center", minWidth: 0 },
   locationRow: { flexDirection: "row", alignItems: "center", gap: 7 },
-  locationText: { fontSize: 16, fontWeight: "600", color: "#252525", maxWidth: width - 210 },
-  notifBtn: { width: 52, height: 52, borderRadius: 26, backgroundColor: "#FFFFFF", justifyContent: "center", alignItems: "center", position: "relative", borderWidth: 1, borderColor: "#D9E8F7", shadowColor: "#6B8196", shadowOpacity: 0.18, shadowRadius: 10, shadowOffset: { width: 0, height: 4 }, elevation: 4 },
+  locationText: { fontSize: 16, fontWeight: "600", color: "#111827", maxWidth: width - 210 },
+  notifBtn: { width: 52, height: 52, borderRadius: 26, backgroundColor: "#FFFFFF", justifyContent: "center", alignItems: "center", position: "relative", borderWidth: 1, borderColor: "#DCEAF6", shadowColor: "#1F2937", shadowOpacity: 0.08, shadowRadius: 10, shadowOffset: { width: 0, height: 4 }, elevation: 4 },
   notifDot: { position: "absolute", top: 8, right: 8, width: 7, height: 7, borderRadius: 4, backgroundColor: "#02023E", borderWidth: 1.5, borderColor: "#fff" },
   cartBadge: {
     position: "absolute", top: -4, right: -4,
