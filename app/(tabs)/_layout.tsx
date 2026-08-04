@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
   barContainer: {
     flexDirection: "row",
     alignItems: "center",
-    justify.content: "space-around",
+    justifyContent: "space-around",
     width: BAR_WIDTH,
     height: BAR_H,
     borderRadius: 36,
