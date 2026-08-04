@@ -47,7 +47,7 @@ const { width } = Dimensions.get("window");
 // Cap the card width so on desktop we don't end up with a single
 // 1000px-wide card per row. On phone (~400px window), width * 0.72 ≈ 288px
 // which is still the dominant constraint; on desktop the 300px cap kicks in.
-const CARD_WIDTH = Math.min(300, width * 0.72);
+const CARD_WIDTH = Math.min(210, width * 0.54);
 
 // ─── DJ Mapper ───────────────────────────────────────────────────────────────
 function mapDJToEquipment(dj: any): Equipment & {
@@ -720,9 +720,19 @@ export default function HomeScreen() {
 
       if (djRes.status === "fulfilled" && djRes.value?.success) {
         const djList = Array.isArray(djRes.value.data) ? djRes.value.data : [];
-        const mapped = djList.map(mapDJToEquipment);
+        let mapped = djList.map(mapDJToEquipment);
+
+        // Position DJ Priya Sharma at the 3rd card spot in the carousel (index 2)
+        const priyaIdx = mapped.findIndex((d) => d.name.toLowerCase().includes("priya"));
+        if (priyaIdx !== -1 && mapped.length >= 3) {
+          const [priya] = mapped.splice(priyaIdx, 1);
+          mapped.splice(2, 0, priya);
+        }
+
         setFeaturedDJs(mapped.slice(0, 5));
-        setPopularDJs(mapped.slice(0, 6));
+        // Home intentionally previews only the top three; the complete
+        // catalogue remains available from the Popular DJs “See All” action.
+        setPopularDJs(mapped.slice(0, 3));
       }
 
       if (captainRes.status === "fulfilled" && captainRes.value?.success) {
@@ -823,10 +833,10 @@ export default function HomeScreen() {
 
   return (
     <>
-      <StatusBar barStyle="dark-content" backgroundColor="#f4f8ff" />
+      <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
       <SafeAreaView style={s.container} edges={["top"]}>
         <LinearGradient
-          colors={["#f4f8ff", "#eef1f9", "#ffffff"]}
+          colors={["#FFFFFF", "#F8FAFC", "#FFFFFF"]}
           start={{ x: 0, y: 0 }}
           end={{ x: 0, y: 1 }}
           style={{ flex: 1 }}
@@ -834,7 +844,12 @@ export default function HomeScreen() {
           <Animated.View style={[{ flex: 1 }]}>
 
             {/* Header */}
-            <View style={s.header}>
+            <LinearGradient
+              colors={["#FFFFFF", "#ECF5FB"]}
+              start={{ x: 0, y: 0.15 }}
+              end={{ x: 1, y: 1 }}
+              style={s.header}
+            >
               <TouchableOpacity
                 style={s.avatarBtn}
                 onPress={() => router.push("/(tabs)/profile" as any)}
@@ -844,8 +859,10 @@ export default function HomeScreen() {
                   uri={user?.profilePicture}
                   firstName={user?.firstName}
                   lastName={user?.lastName}
-                  size={40}
-                  radius={14}
+                  size={46}
+                  radius={23}
+                  borderWidth={2}
+                  borderColor="#FFFFFF"
                 />
                 <View style={s.onlineDot} />
               </TouchableOpacity>
@@ -854,13 +871,12 @@ export default function HomeScreen() {
                 onPress={() => setIsLocationSheetVisible(true)}
                 activeOpacity={0.7}
               >
-                <Text style={s.locationLabel}>LOCATION</Text>
                 <View style={s.locationRow}>
-                  <Ionicons name="location" size={15} color="#02023E" />
+                  <Ionicons name="location" size={20} color="#1E3A8A" />
                   <Text style={s.locationText} numberOfLines={1}>
                     {location?.area || location?.city || "Select Location"}
                   </Text>
-                  <Ionicons name="chevron-down" size={16} color="#8696a0" />
+                  <Ionicons name="chevron-down" size={18} color="#6B7280" />
                 </View>
               </TouchableOpacity>
               <TouchableOpacity
@@ -868,14 +884,14 @@ export default function HomeScreen() {
                 onPress={() => router.push("/cart" as any)}
                 activeOpacity={0.8}
               >
-                <Ionicons name="cart-outline" size={22} color="#101720" />
+                <Ionicons name="cart-outline" size={25} color="#1E3A8A" />
                 {cartItemCount > 0 && (
                   <View style={s.cartBadge}>
                     <Text style={s.cartBadgeText}>{cartItemCount}</Text>
                   </View>
                 )}
               </TouchableOpacity>
-            </View>
+            </LinearGradient>
 
             {/* Greeting */}
             <View style={s.greetingRow}>
@@ -967,10 +983,10 @@ export default function HomeScreen() {
                   </View>
                 ) : (
                   // Fallback: the built-in "Quick Booking" promo, kept so the
-                  // home tab isn't blank for a brand-new install.
+                  // Fallback: the built-in "Quick Booking" promo with official Basswala mascot & cyan branding
                   <View style={s.bannerSection}>
                     <LinearGradient
-                      colors={["#cfe8ff", "#c5d9f7"]}
+                      colors={["#02023E", "#070D2A", "#01011A"]}
                       start={{ x: 0, y: 0 }}
                       end={{ x: 1, y: 1 }}
                       style={s.bannerCard}
@@ -979,23 +995,18 @@ export default function HomeScreen() {
                         <View style={s.bannerBadge}>
                           <Text style={s.bannerBadgeText}>QUICK BOOKING</Text>
                         </View>
-                        <Text style={s.bannerText}>Book a DJ in{"\n"}three taps</Text>
-                        <TouchableOpacity style={s.bannerBtn} onPress={() => switchTab("dj")}>
-                          <Text style={s.bannerBtnText}>Start</Text>
-                          <Ionicons name="arrow-forward" size={15} color="#fff" />
+                        <Text style={s.bannerText}>Book your DJ in{"\n"}three taps</Text>
+                        <TouchableOpacity style={s.bannerBtn} activeOpacity={0.85} onPress={() => switchTab("dj")}>
+                          <Text style={s.bannerBtnText}>Start Booking</Text>
+                          <Ionicons name="arrow-forward" size={15} color="#010128" />
                         </TouchableOpacity>
                       </View>
                       <View style={s.bannerRight}>
-                        <View style={s.lottieWrap}>
-                          <LottieView
-                            ref={lottieRef}
-                            source={require("../../assets/animations/banner.json")}
-                            autoPlay
-                            loop={false}
-                            style={s.lottie}
-                            onAnimationFinish={() => setShouldPlay(false)}
-                          />
-                        </View>
+                        <Image
+                          source={require("../../assets/images/speaker-banner-mascot.png")}
+                          style={s.bannerMascotImg}
+                          resizeMode="contain"
+                        />
                       </View>
                     </LinearGradient>
                   </View>
@@ -1095,7 +1106,7 @@ export default function HomeScreen() {
                             <TouchableOpacity
                               style={[s.featuredBookBtn, {
                                 backgroundColor: item.available
-                                  ? "#04c9ce"
+                                  ? "#01011A"
                                   : "rgba(255,255,255,0.15)"
                               }]}
                               disabled={!item.available}
@@ -1105,7 +1116,7 @@ export default function HomeScreen() {
                               <Ionicons
                                 name="calendar-outline"
                                 size={13}
-                                color={item.available ? "#fff" : "rgba(255,255,255,0.4)"}
+                                color={item.available ? "#05EAF7" : "rgba(255,255,255,0.4)"}
                               />
                               <Text style={[s.featuredBookBtnText, !item.available && { color: "rgba(255,255,255,0.4)" }]}>
                                 {item.available ? "Book Now" : "Unavailable"}
@@ -1143,7 +1154,6 @@ export default function HomeScreen() {
                       contentContainerStyle={{ paddingHorizontal: 20, gap: 12 }}
                     >
                       {captains.map((c: any) => {
-                        const initial = (c.businessName?.[0] || c.user?.firstName?.[0] || "C").toUpperCase();
                         const saved = isCaptainSaved(c.id);
                         return (
                           <PressableScale
@@ -1152,67 +1162,67 @@ export default function HomeScreen() {
                             scaleTo={0.96}
                             onPress={() => router.push(`/captain/${c.id}` as any)}
                           >
-
-                            <View style={s.captainCardContainer}>
+                            {/* Avatar + Verified Badge */}
                             <View style={s.captainCardHeader}>
-                              {/* CaptainAvatar centralises the http-check + onError
-                                  fallback so a missing / 404 photo silently falls
-                                  back to initials instead of a broken icon. */}
                               <CaptainAvatar
                                 uri={c.profilePicture || c.user?.profilePicture || c.user?.avatar || c.avatar}
                                 name={c.businessName || c.user?.firstName || "Captain"}
-                                size={56}
-                                radius={18}
-                                textSize={24}
+                                size={52}
+                                radius={16}
+                                textSize={22}
                               />
-                              {/* (old inline avatar removed — handled by CaptainAvatar) */}
                               {c.isVerified && (
                                 <View style={s.captainVerified}>
-                                  <Ionicons name="checkmark" size={10} color="#fff" />
+                                  <Ionicons name="checkmark-circle" size={18} color="#22c55e" />
                                 </View>
                               )}
                             </View>
+
+                            {/* Name */}
                             <Text style={s.captainCardName} numberOfLines={1}>
                               {c.businessName || `${c.user?.firstName || ""} ${c.user?.lastName || ""}`.trim() || "Captain"}
                             </Text>
+
+                            {/* Location */}
                             {c.locationCity && (
                               <View style={s.captainCardLoc}>
                                 <Ionicons name="location-outline" size={10} color="#8696a0" />
                                 <Text style={s.captainCardLocText} numberOfLines={1}>{c.locationCity}</Text>
                               </View>
                             )}
+
+                            {/* Stats Row */}
                             <View style={s.captainCardStats}>
                               <View style={s.captainCardStat}>
-                                <Ionicons name="musical-notes-outline" size={11} color="#02023E" />
-                                <Text style={s.captainCardStatText}>{c.djCount || 0}</Text>
+                                <Ionicons name="musical-notes-outline" size={11} color="#05EAF7" />
+                                <Text style={s.captainCardStatText}>{c.djCount || 0} DJs</Text>
                               </View>
                               <View style={s.captainCardStatDiv} />
                               <View style={s.captainCardStat}>
-                                <Ionicons name="hardware-chip-outline" size={11} color="#f59e0b" />
+                                <Ionicons name="hardware-chip-outline" size={11} color="#05EAF7" />
                                 <Text style={s.captainCardStatText}>{c.equipmentCount || 0}</Text>
                               </View>
                             </View>
-                            </View>
 
+                            {/* Footer */}
                             <View style={s.captainCardFooter}>
                               <View style={s.captainCardFooterViewButton}>
-                                <Text style={s.captainCardFooterText}>View Profile</Text>
-                                {/* <Ionicons name="arrow-forward" size={11} color="#02023E" /> */}
+                                <Text style={s.captainCardFooterText}>View</Text>
                               </View>
                               <TouchableOpacity
-                              style={s.captainHeart}
-                              onPress={(e) => {
-                                e.stopPropagation();
-                                toggleCaptain(c.id);
-                              }}
-                              hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-                            >
-                              <Ionicons
-                                name={saved ? "heart" : "heart-outline"}
-                                size={16}
-                                color={saved ? "#ef4444" : "#8696a0"}
-                              />
-                            </TouchableOpacity>
+                                style={s.captainHeart}
+                                onPress={(e) => {
+                                  e.stopPropagation();
+                                  toggleCaptain(c.id);
+                                }}
+                                hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+                              >
+                                <Ionicons
+                                  name={saved ? "heart" : "heart-outline"}
+                                  size={15}
+                                  color={saved ? "#ef4444" : "#8696a0"}
+                                />
+                              </TouchableOpacity>
                             </View>
                           </PressableScale>
                         );
@@ -1300,9 +1310,13 @@ export default function HomeScreen() {
                         <Text style={s.sectionTitle}>Popular DJs</Text>
                         <Text style={s.sectionSub}>Most booked this week</Text>
                       </View>
-                      <TouchableOpacity style={s.seeAllBtn} onPress={() => router.push("/(tabs)/explore" as any)}>
-                        <Text style={s.seeAll}>See All</Text>
-                        <Ionicons name="arrow-forward" size={13} color="#02023E" />
+                      <TouchableOpacity
+                        style={s.popularSeeAllBtn}
+                        onPress={() => router.push("/(tabs)/explore" as any)}
+                        activeOpacity={0.75}
+                      >
+                        <Text style={s.popularSeeAllText}>See All</Text>
+                        <Ionicons name="arrow-forward" size={14} color="#2563EB" />
                       </TouchableOpacity>
                     </View>
                     <TouchableOpacity
@@ -1346,12 +1360,8 @@ export default function HomeScreen() {
                       </View>
                     </TouchableOpacity>
 
-                    <ScrollView
-                      horizontal
-                      showsHorizontalScrollIndicator={false}
-                      contentContainerStyle={s.smallCardsScroll}
-                    >
-                      {popularDJs.slice(1, 5).map((item, idx) => (
+                    <View style={s.popularGrid}>
+                      {popularDJs.slice(1, 3).map((item, idx) => (
                         <TouchableOpacity
                           key={item.id}
                           style={s.smallCard}
@@ -1393,7 +1403,7 @@ export default function HomeScreen() {
                           </View>
                         </TouchableOpacity>
                       ))}
-                    </ScrollView>
+                    </View>
                   </View>
                 )}
 
@@ -1415,7 +1425,16 @@ export default function HomeScreen() {
                   </LinearGradient>
                 </View>
 
-                <View style={{ height: 120 }} />
+                {/* Decorative closing artwork — transparent asset, contained above the tab bar. */}
+                <View style={s.homeArtWrap}>
+                  <Image
+                    source={require("../../assets/images/home-dj-footer.png")}
+                    style={s.homeArt}
+                    resizeMode="contain"
+                    accessible
+                    accessibilityLabel="DJ relaxing beside a speaker"
+                  />
+                </View>
               </ScrollView>
             )}
           </Animated.View>
@@ -1433,17 +1452,22 @@ export default function HomeScreen() {
 // ─── Styles ───────────────────────────────────────────────────────────────────
 
 const s = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#f4f8ff" },
-  scrollContent: { paddingBottom: 120 },
-  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingVertical: 10, gap: 12 },
+  container: { flex: 1, backgroundColor: "#FFFFFF" },
+  // Keeps the footer artwork fully above the floating bottom navigation.
+  scrollContent: { paddingBottom: 56 },
+  header: {
+    flexDirection: "row", alignItems: "center", height: 74, marginHorizontal: 18, marginTop: 1,
+    paddingLeft: 14, paddingRight: 10, borderRadius: 37, gap: 12,
+    borderWidth: 1, borderColor: "#DCEAF6", shadowColor: "#1F2937", shadowOpacity: 0.08,
+    shadowRadius: 16, shadowOffset: { width: 0, height: 7 }, elevation: 5,
+  },
   avatarBtn: { position: "relative" },
   avatar: { width: 40, height: 40, borderRadius: 14, backgroundColor: "#e5e7eb" },
-  onlineDot: { position: "absolute", bottom: 1, right: 1, width: 9, height: 9, borderRadius: 5, backgroundColor: "#22c55e", borderWidth: 2, borderColor: "#f4f8ff" },
-  locationBtn: { flex: 1, alignItems: "center" },
-  locationLabel: { fontSize: 9, color: "#8696a0", fontWeight: "700", letterSpacing: 1, marginBottom: 2 },
-  locationRow: { flexDirection: "row", alignItems: "center", gap: 4 },
-  locationText: { fontSize: 14, fontWeight: "700", color: "#101720", maxWidth: width - 220 },
-  notifBtn: { width: 40, height: 40, borderRadius: 13, backgroundColor: "#fff", justifyContent: "center", alignItems: "center", position: "relative", shadowColor: "#000", shadowOpacity: 0.06, shadowRadius: 8, shadowOffset: { width: 0, height: 2 }, elevation: 2 },
+  onlineDot: { position: "absolute", bottom: 0, right: 0, width: 11, height: 11, borderRadius: 6, backgroundColor: "#18D978", borderWidth: 2, borderColor: "#FFFFFF" },
+  locationBtn: { flex: 1, alignItems: "center", justifyContent: "center", minWidth: 0 },
+  locationRow: { flexDirection: "row", alignItems: "center", gap: 7 },
+  locationText: { fontSize: 16, fontWeight: "600", color: "#111827", maxWidth: width - 210 },
+  notifBtn: { width: 52, height: 52, borderRadius: 26, backgroundColor: "#FFFFFF", justifyContent: "center", alignItems: "center", position: "relative", borderWidth: 1, borderColor: "#DCEAF6", shadowColor: "#1F2937", shadowOpacity: 0.08, shadowRadius: 10, shadowOffset: { width: 0, height: 4 }, elevation: 4 },
   notifDot: { position: "absolute", top: 8, right: 8, width: 7, height: 7, borderRadius: 4, backgroundColor: "#02023E", borderWidth: 1.5, borderColor: "#fff" },
   cartBadge: {
     position: "absolute", top: -4, right: -4,
@@ -1456,37 +1480,36 @@ const s = StyleSheet.create({
 
   // Captain cards
   captainCard: {
-    
-    alignItems: "center",
-    position: "relative",
-  },
-  captainCardContainer: {
-    width: 150, 
+    width: 155,
     backgroundColor: "#fff",
     padding: 14,
-    borderRadius: 18, 
-    borderWidth: 1, borderColor: "#eef0f3", 
-    position: "relative",
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: "#e8ecf1",
     alignItems: "center",
+    shadowColor: "#101720",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.06,
+    shadowRadius: 10,
+    elevation: 3,
   },
   captainHeart: {
-    width: 32, height: 32, borderRadius: 100,
+    width: 30, height: 30, borderRadius: 100,
     backgroundColor: "#f8fafc",
     alignItems: "center", justifyContent: "center",
-    borderWidth: 1, borderColor: "#eaeaea",
-    zIndex: 2,
+    borderWidth: 1, borderColor: "#e8ecf1",
   },
   captainCardHeader: { position: "relative", marginBottom: 10 },
   captainCardAvatar: {
-    width: 62, height: 62, borderRadius: 20,
+    width: 52, height: 52, borderRadius: 16,
     alignItems: "center", justifyContent: "center",
   },
-  captainCardAvatarText: { fontSize: 24, fontWeight: "800", color: "#fff" },
+  captainCardAvatarText: { fontSize: 22, fontWeight: "800", color: "#fff" },
   captainVerified: {
-    position: "absolute", bottom: -2, right: -2,
-    width: 20, height: 20, borderRadius: 10, backgroundColor: "#02023E",
+    position: "absolute", bottom: -3, right: -3,
+    width: 20, height: 20, borderRadius: 10, backgroundColor: "#fff",
     alignItems: "center", justifyContent: "center",
-    borderWidth: 2, borderColor: "#fff",
+    borderWidth: 0,
   },
   captainCardName: {
     fontSize: 13, fontWeight: "800", color: "#101720",
@@ -1495,25 +1518,25 @@ const s = StyleSheet.create({
   captainCardLoc: { flexDirection: "row", alignItems: "center", gap: 2, marginTop: 3 },
   captainCardLocText: { fontSize: 10, color: "#8696a0", fontWeight: "500", maxWidth: 100 },
   captainCardStats: {
-    flexDirection: "row", alignItems: "center", gap: 10,
-    marginTop: 10, backgroundColor: "#f8fafc", borderRadius: 10,
+    flexDirection: "row", alignItems: "center", gap: 8,
+    marginTop: 10, backgroundColor: "#f4f8ff", borderRadius: 10,
     paddingHorizontal: 10, paddingVertical: 6,
-    borderWidth: 1, borderColor: "#eef0f3",
+    borderWidth: 1, borderColor: "#e8ecf1",
   },
   captainCardStat: { flexDirection: "row", alignItems: "center", gap: 3 },
-  captainCardStatText: { fontSize: 11, fontWeight: "800", color: "#101720" },
-  captainCardStatDiv: { width: 1, height: 12, backgroundColor: "#eef0f3" },
+  captainCardStatText: { fontSize: 10, fontWeight: "700", color: "#101720" },
+  captainCardStatDiv: { width: 1, height: 12, backgroundColor: "#dde3ea" },
   captainCardFooter: {
-    flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 3,
-    marginTop: 10, width: 150, 
+    flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 6,
+    marginTop: 10, width: "100%",
   },
   captainCardFooterViewButton: {
-    flexDirection: "row", alignItems: "center", justifyContent: "center", textAlign: "center", gap: 3, width: 100,
-    backgroundColor: "#101720", padding: 8, borderWidth: 1, borderColor: "#eef0f3", borderRadius: 100
+    flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 3,
+    backgroundColor: "#02023E", paddingVertical: 8, borderRadius: 100,
   },
   captainCardFooterLikeButton: {
-    flexDirection: "row", alignItems: "center", justifyContent: "center", textAlign: "center", gap: 3,
-    backgroundColor: "#ffffff", padding: 8, borderWidth: 1, borderColor: "#eef0f3", borderRadius: 100
+    flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 3,
+    backgroundColor: "#ffffff", padding: 8, borderWidth: 1, borderColor: "#e8ecf1", borderRadius: 100
   },
   captainCardFooterText: { fontSize: 11, textAlign: "center", fontWeight: "700", color: "#ffffff" },
   greetingRow: { paddingHorizontal: 20, paddingTop: 2, paddingBottom: 14 },
@@ -1530,45 +1553,69 @@ const s = StyleSheet.create({
   searchPlaceholder: { flex: 1, fontSize: 15, color: "#8696a0", fontWeight: "400" },
   filterBtn: { width: 50, height: 50, borderRadius: 16, backgroundColor: "#fff", justifyContent: "center", alignItems: "center", borderWidth: 1, borderColor: "#eef0f3" },
   bannerSection: { paddingHorizontal: 20, marginBottom: 28 },
-  bannerCard: { borderRadius: 22, flexDirection: "row", alignItems: "center", height: 156, paddingHorizontal: 22, overflow: "hidden" },
-  bannerLeft: { flex: 1, gap: 10, zIndex: 2 },
-  bannerBadge: { alignSelf: "flex-start", backgroundColor: "#fff", borderRadius: 20, paddingHorizontal: 10, paddingVertical: 4 },
-  bannerBadgeText: { fontSize: 9, fontWeight: "800", color: "#02023E", letterSpacing: 0.8 },
-  bannerText: { fontSize: 21, fontWeight: "800", color: "#101720", lineHeight: 27 },
-  bannerBtn: { flexDirection: "row", alignItems: "center", alignSelf: "flex-start", backgroundColor: "#101720", paddingHorizontal: 18, paddingVertical: 10, borderRadius: 50, gap: 6 },
-  bannerBtnText: { fontSize: 13, fontWeight: "700", color: "#fff" },
-  bannerRight: { flex: 1, alignItems: "flex-end", justifyContent: "center" },
-  lottieWrap: { position: "absolute", right: -42, top: -110, width: 190, height: 190 },
-  lottie: { width: "100%", height: "100%" },
+  bannerCard: { 
+    borderRadius: 24, 
+    flexDirection: "row", 
+    alignItems: "center", 
+    height: 165, 
+    paddingLeft: 20, 
+    paddingRight: 8,
+    overflow: "hidden", 
+    position: "relative",
+    borderWidth: 1.5,
+    borderColor: "rgba(5, 234, 247, 0.35)",
+    shadowColor: "#05EAF7",
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.2,
+    shadowRadius: 16,
+    elevation: 8,
+  },
+  bannerLeft: { flex: 1.1, gap: 10, zIndex: 2, paddingVertical: 12 },
+  bannerBadge: { alignSelf: "flex-start", backgroundColor: "rgba(5, 234, 247, 0.15)", borderColor: "rgba(5, 234, 247, 0.4)", borderWidth: 1, borderRadius: 20, paddingHorizontal: 10, paddingVertical: 4 },
+  bannerBadgeText: { fontSize: 9, fontWeight: "800", color: "#05EAF7", letterSpacing: 0.8 },
+  bannerText: { fontSize: 20, fontWeight: "800", color: "#FFFFFF", lineHeight: 26, letterSpacing: -0.3 },
+  bannerBtn: { flexDirection: "row", alignItems: "center", alignSelf: "flex-start", backgroundColor: "#05EAF7", paddingHorizontal: 18, paddingVertical: 10, borderRadius: 50, gap: 6 },
+  bannerBtnText: { fontSize: 13, fontWeight: "800", color: "#010128" },
+  bannerRight: { flex: 1, height: "100%", justifyContent: "flex-end", alignItems: "flex-end", position: "relative", zIndex: 1 },
+  bannerMascotImg: { width: 165, height: 185, position: "absolute", bottom: -10, right: -15 },
   section: { marginBottom: 28 },
   sectionHeader: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingHorizontal: 20, marginBottom: 14 },
   sectionTitle: { fontSize: 20, fontWeight: "800", color: "#101720", letterSpacing: -0.4 },
   sectionSub: { fontSize: 12, color: "#8696a0", fontWeight: "500", marginTop: 2 },
   seeAll: { fontSize: 14, color: "#02023E", fontWeight: "600" },
   seeAllBtn: { flexDirection: "row", alignItems: "center", gap: 4 },
-  featuredScroll: { paddingHorizontal: 20, gap: 16 },
+  featuredScroll: { paddingHorizontal: 20, gap: 12 },
   featuredCard: {
-    width: CARD_WIDTH, height: 264, borderRadius: 22, overflow: "hidden", position: "relative",
-    backgroundColor: "#1a2535",
-    shadowColor: "#101720", shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.22, shadowRadius: 16, elevation: 6,
+    width: CARD_WIDTH, 
+    height: 215, 
+    borderRadius: 20, 
+    overflow: "hidden", 
+    position: "relative",
+    backgroundColor: "#02023E",
+    borderWidth: 1.5,
+    borderColor: "rgba(5, 234, 247, 0.35)",
+    shadowColor: "#05EAF7", 
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.18, 
+    shadowRadius: 12, 
+    elevation: 6,
   },
-  featuredImg: { width: "100%", height: "100%", backgroundColor: "#1a2535" },
-  featuredTopRow: { position: "absolute", top: 12, left: 12, right: 12, flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
-  featuredBottom: { position: "absolute", bottom: 0, left: 0, right: 0, padding: 12, gap: 3 },
-  featuredCat: { fontSize: 9, fontWeight: "700", color: "rgba(255,255,255,0.55)", letterSpacing: 0.9 },
-  featuredName: { fontSize: 17, fontWeight: "800", color: "#fff", letterSpacing: -0.4, marginBottom: 4 },
-  featuredMetaRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 8 },
-  ratingRow: { flexDirection: "row", alignItems: "center", gap: 4 },
-  ratingOverlay: { fontSize: 12, fontWeight: "700", color: "#fff" },
-  reviewsOverlay: { fontSize: 11, color: "rgba(255,255,255,0.5)" },
-  priceOverlay: { fontSize: 18, fontWeight: "800", color: "#fff" },
-  priceOverlayUnit: { fontSize: 10, fontWeight: "500", color: "rgba(255,255,255,0.6)" },
-  featuredBookBtn: { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 6, paddingVertical: 11, borderRadius: 13 },
-  featuredBookBtnText: { fontSize: 13, fontWeight: "800", color: "#fff" },
-  tagPill: { paddingHorizontal: 10, paddingVertical: 5, borderRadius: 8, backgroundColor: "#FFC107" },
-  tagPillText: { fontSize: 10, fontWeight: "800", color: "#101720", letterSpacing: 0.2 },
-  heartBtn: { width: 32, height: 32, borderRadius: 11, backgroundColor: "rgba(16,23,32,0.5)", justifyContent: "center", alignItems: "center" },
+  featuredImg: { width: "100%", height: "100%", backgroundColor: "#010128" },
+  featuredTopRow: { position: "absolute", top: 10, left: 10, right: 10, flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
+  featuredBottom: { position: "absolute", bottom: 0, left: 0, right: 0, padding: 10, gap: 2 },
+  featuredCat: { fontSize: 8.5, fontWeight: "800", color: "#05EAF7", letterSpacing: 0.8 },
+  featuredName: { fontSize: 14, fontWeight: "800", color: "#fff", letterSpacing: -0.3, marginBottom: 2 },
+  featuredMetaRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 6 },
+  ratingRow: { flexDirection: "row", alignItems: "center", gap: 3 },
+  ratingOverlay: { fontSize: 11, fontWeight: "700", color: "#fff" },
+  reviewsOverlay: { fontSize: 9.5, color: "rgba(255,255,255,0.6)" },
+  priceOverlay: { fontSize: 14, fontWeight: "800", color: "#05EAF7" },
+  priceOverlayUnit: { fontSize: 9, fontWeight: "600", color: "rgba(255,255,255,0.7)" },
+  featuredBookBtn: { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 5, paddingVertical: 7, borderRadius: 12, borderWidth: 1, borderColor: "rgba(5, 234, 247, 0.4)" },
+  featuredBookBtnText: { fontSize: 11, fontWeight: "800", color: "#FFFFFF" },
+  tagPill: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 6, backgroundColor: "rgba(5, 234, 247, 0.2)", borderWidth: 1, borderColor: "rgba(5, 234, 247, 0.6)" },
+  tagPillText: { fontSize: 9, fontWeight: "800", color: "#05EAF7", letterSpacing: 0.2 },
+  heartBtn: { width: 28, height: 28, borderRadius: 10, backgroundColor: "rgba(1, 1, 40, 0.6)", justifyContent: "center", alignItems: "center" },
   availChip: { alignSelf: "flex-start", flexDirection: "row", alignItems: "center", backgroundColor: "rgba(255,255,255,0.9)", paddingHorizontal: 8, paddingVertical: 3, borderRadius: 20, gap: 5, marginBottom: 4 },
   availChipOff: { backgroundColor: "rgba(220,220,220,0.85)" },
   availDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: "#22c55e" },
@@ -1587,10 +1634,10 @@ const s = StyleSheet.create({
   howCircle: { width: 48, height: 48, borderRadius: 16, backgroundColor: "#f0fafa", justifyContent: "center", alignItems: "center", borderWidth: 1, borderColor: "#d0f0ef", marginBottom: 8 },
   howLabel: { fontSize: 11, fontWeight: "700", color: "#101720", textAlign: "center", lineHeight: 15 },
   howConnector: { position: "absolute", top: 24, right: -16, width: 16, height: 1, backgroundColor: "#d0f0ef" },
-  heroCard: { marginHorizontal: 20, borderRadius: 22, overflow: "hidden", height: 200, position: "relative", marginBottom: 12, borderWidth: 1, borderColor: "#eef0f3" },
+  heroCard: { marginHorizontal: 20, borderRadius: 22, overflow: "hidden", height: 200, position: "relative", marginBottom: 12, borderWidth: 1, borderColor: "#DCEAF6", shadowColor: "#1F2937", shadowOpacity: 0.08, shadowRadius: 10, shadowOffset: { width: 0, height: 4 }, elevation: 3 },
   heroImg: { width: "100%", height: "100%", backgroundColor: "#e5e7eb" },
   heroOverlay: { ...StyleSheet.absoluteFillObject },
-  heroRankBadge: { position: "absolute", top: 12, left: 12, backgroundColor: "#101720", paddingHorizontal: 10, paddingVertical: 4, borderRadius: 10 },
+  heroRankBadge: { position: "absolute", top: 12, left: 12, backgroundColor: "#0F172A", paddingHorizontal: 10, paddingVertical: 4, borderRadius: 10 },
   heroRankText: { fontSize: 11, fontWeight: "800", color: "#fff", letterSpacing: 0.2 },
   heroContent: { position: "absolute", bottom: 0, left: 0, right: 0, flexDirection: "row", alignItems: "flex-end", padding: 16, gap: 12 },
   heroCat: { fontSize: 9, fontWeight: "700", color: "rgba(255,255,255,0.65)", letterSpacing: 0.9, marginBottom: 4 },
@@ -1600,18 +1647,20 @@ const s = StyleSheet.create({
   heroDot: { width: 3, height: 3, borderRadius: 2, backgroundColor: "rgba(255,255,255,0.4)" },
   heroPrice: { fontSize: 12, fontWeight: "700" },
   heroBookBtn: { width: 40, height: 40, borderRadius: 13, backgroundColor: "#fff", justifyContent: "center", alignItems: "center" },
-  smallCardsScroll: { paddingHorizontal: 20, gap: 10 },
-  smallCard: { width: 148, height: 170, borderRadius: 18, overflow: "hidden", position: "relative", borderWidth: 1, borderColor: "#eef0f3" },
+  popularSeeAllBtn: { flexDirection: "row", alignItems: "center", gap: 4, backgroundColor: "#EFF6FF", paddingHorizontal: 10, paddingVertical: 7, borderRadius: 12 },
+  popularSeeAllText: { fontSize: 13, color: "#2563EB", fontWeight: "700" },
+  popularGrid: { flexDirection: "row", gap: 12, paddingHorizontal: 20 },
+  smallCard: { flex: 1, height: 178, borderRadius: 18, overflow: "hidden", position: "relative", borderWidth: 1, borderColor: "#DCEAF6", shadowColor: "#1F2937", shadowOpacity: 0.08, shadowRadius: 8, shadowOffset: { width: 0, height: 3 }, elevation: 2 },
   smallImg: { width: "100%", height: "100%", backgroundColor: "#e5e7eb" },
   smallOverlay: { ...StyleSheet.absoluteFillObject },
-  smallRankBadge: { position: "absolute", top: 10, left: 10, backgroundColor: "#101720", paddingHorizontal: 8, paddingVertical: 3, borderRadius: 9 },
+  smallRankBadge: { position: "absolute", top: 10, left: 10, backgroundColor: "#0F172A", paddingHorizontal: 8, paddingVertical: 3, borderRadius: 9 },
   smallRankText: { fontSize: 11, fontWeight: "800", color: "#fff", letterSpacing: 0.2 },
   smallContent: { position: "absolute", bottom: 0, left: 0, right: 0, padding: 11 },
   smallCat: { fontSize: 8, fontWeight: "700", color: "rgba(255,255,255,0.6)", letterSpacing: 0.7, marginBottom: 3 },
   smallName: { fontSize: 13, fontWeight: "800", color: "#fff", letterSpacing: -0.3, marginBottom: 5 },
   smallFooter: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
   smallRating: { fontSize: 11, fontWeight: "700", color: "#fff" },
-  smallBookBtn: { paddingHorizontal: 8, paddingVertical: 4, borderRadius: 9 },
+  smallBookBtn: { paddingHorizontal: 8, paddingVertical: 5, borderRadius: 9 },
   smallBookBtnText: { fontSize: 10, fontWeight: "800", color: "#fff" },
   promoWrap: { marginHorizontal: 20, borderRadius: 20, overflow: "hidden" },
   promoGrad: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 22, paddingVertical: 20 },
@@ -1619,6 +1668,8 @@ const s = StyleSheet.create({
   promoSub: { fontSize: 12, color: "rgba(255,255,255,0.8)", fontWeight: "500" },
   promoBtn: { backgroundColor: "#fff", paddingHorizontal: 18, paddingVertical: 10, borderRadius: 12 },
   promoBtnText: { fontSize: 13, fontWeight: "700", color: "#02023E" },
+  homeArtWrap: { marginTop: 18, paddingHorizontal: 20, alignItems: "center" },
+  homeArt: { width: "100%", height: 230 },
 });
 
 // ─── Book-a-DJ Styles ─────────────────────────────────────────────────────────

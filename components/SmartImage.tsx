@@ -107,6 +107,19 @@ export default function SmartImage({
     );
   }
 
+  // Fallback to default Basswala DJ setup image for DJs and Equipment (perfectly centered)
+  if (kind === "dj" || kind === "equipment") {
+    return (
+      <View style={[styles.defaultContainer, style as any]}>
+        <Image
+          source={require("../assets/images/default-dj.jpg")}
+          style={styles.defaultImg}
+          resizeMode="cover"
+        />
+      </View>
+    );
+  }
+
   const cfg = KIND_CONFIG[kind];
   const initial = (label?.[0] ?? "").toUpperCase();
 
@@ -129,6 +142,16 @@ export default function SmartImage({
 }
 
 const styles = StyleSheet.create({
+  defaultContainer: {
+    overflow: "hidden",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#0A0F1D",
+  },
+  defaultImg: {
+    width: "100%",
+    height: "100%",
+  },
   placeholder: {
     alignItems: "center",
     justifyContent: "center",
