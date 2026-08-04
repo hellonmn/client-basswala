@@ -73,10 +73,10 @@ function TabButton({
       android_ripple={null}
     >
       <Animated.View style={[styles.tabContent, { transform: [{ scale: scaleAnim }] }]}>
-        {/* Primary blue and navy establish the active Basswala tab. */}
+        {/* Basswala cyan marks the active tab. */}
         {isFocused ? (
           <LinearGradient
-            colors={["#2563EB", "#1E3A8A"]}
+            colors={["#22D3EE", "#05EAF7"]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
             style={styles.iconPillActive}
@@ -84,7 +84,7 @@ function TabButton({
             <Ionicons
               name={tab.icon as any}
               size={22}
-              color="#FFFFFF"
+              color="#0F172A"
             />
             {badge != null && badge > 0 && (
               <View style={styles.tabBadge}>
