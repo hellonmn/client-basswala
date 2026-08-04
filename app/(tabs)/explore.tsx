@@ -28,7 +28,6 @@ import { servicesApi } from "../../services/userApi";
 import { useCart } from "../../context/CartContext";
 import { useLocation } from "../../context/LocationContext";
 import { useSaved } from "../../context/SavedContext";
-import BannerCard from "../../components/BannerCard";
 import { DateField } from "../../components/DateTimePickerField";
 import LocationBottomSheet from "../../components/LocationBottomSheet";
 import SmartImage from "../../components/SmartImage";
@@ -362,7 +361,6 @@ export default function BrowseScreen() {
   const { location } = useLocation();
   const [allDJs, setAllDJs] = useState<EquipmentItem[]>([]);
   const [captains, setCaptains] = useState<any[]>([]);
-  const [banners, setBanners] = useState<Array<{ id: number; imageUrl: string; title?: string; subtitle?: string; ctaLabel?: string; ctaLink?: string }>>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -393,10 +391,9 @@ export default function BrowseScreen() {
       const djParams = filterDate
         ? { startDate: filterDate, endDate: filterDate }
         : undefined;
-      const [djRes, capRes, bannerRes] = await Promise.allSettled([
+      const [djRes, capRes] = await Promise.allSettled([
         servicesApi.getAllDJs(djParams),
         servicesApi.getCaptains(),
-        servicesApi.getBanners('explore'),
       ]);
 
       if (djRes.status === "fulfilled" && djRes.value?.success) {
@@ -410,9 +407,6 @@ export default function BrowseScreen() {
         setCaptains(capRes.value.data || []);
       }
 
-      if (bannerRes.status === "fulfilled" && bannerRes.value?.success) {
-        setBanners(bannerRes.value.data || []);
-      }
     } catch (err) {
       console.error("[explore] Failed to fetch data:", err);
       setAllDJs([]);
@@ -471,16 +465,22 @@ export default function BrowseScreen() {
 
   return (
     <>
-      <StatusBar barStyle="dark-content" backgroundColor="#f4f8ff" />
+      <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
       <SafeAreaView style={styles.container} edges={["top"]}>
         <LinearGradient
-          colors={["#f4f8ff", "#eef1f9", "#ffffff"]}
+          colors={["#FFFFFF", "#F8FAFC", "#FFFFFF"]}
           start={{ x: 0, y: 0 }}
           end={{ x: 0, y: 1 }}
           style={{ flex: 1 }}
         >
           {/* Header — tight location + right-side cart */}
-          <Animated.View style={[styles.header, { opacity: headerOp, transform: [{ translateY: headerY }] }]}>
+          <Animated.View style={[{ opacity: headerOp, transform: [{ translateY: headerY }] }]}>
+            <LinearGradient
+              colors={["#FFFFFF", "#ECF5FB"]}
+              start={{ x: 0, y: 0.15 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.header}
+            >
             <TouchableOpacity
               style={styles.locationWrap}
               activeOpacity={0.85}
@@ -520,6 +520,7 @@ export default function BrowseScreen() {
                 </View>
               )}
             </TouchableOpacity>
+            </LinearGradient>
           </Animated.View>
 
           {/* Fat rounded search with filter button */}

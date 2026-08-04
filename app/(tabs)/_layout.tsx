@@ -24,9 +24,9 @@ const BAR_H = 74;
 const BAR_SIDE_PAD = 16;
 const BAR_WIDTH = Math.min(SCREEN_WIDTH - BAR_SIDE_PAD * 2, 480);
 
-// Basswala ice-blue brand colours
-const ACTIVE_TEXT_COLOR = "#1E3A8A";
-const INACTIVE_COLOR = "#6B7280";
+// Basswala brand colors for black navbar
+const ACTIVE_TEXT_COLOR = "#05EAF7";
+const INACTIVE_COLOR = "#8696A0";
 
 function TabButton({
   tab,
@@ -73,10 +73,10 @@ function TabButton({
       android_ripple={null}
     >
       <Animated.View style={[styles.tabContent, { transform: [{ scale: scaleAnim }] }]}>
-        {/* Basswala cyan marks the active tab. */}
+        {/* Basswala cyan pill marks the active tab */}
         {isFocused ? (
           <LinearGradient
-            colors={["rgba(34, 211, 238, 0.72)", "rgba(5, 234, 247, 0.72)"]}
+            colors={["#05EAF7", "#00B4D8"]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
             style={styles.iconPillActive}
@@ -84,7 +84,7 @@ function TabButton({
             <Ionicons
               name={tab.icon as any}
               size={22}
-              color="#0F172A"
+              color="#01011A"
             />
             {badge != null && badge > 0 && (
               <View style={styles.tabBadge}>
@@ -128,10 +128,10 @@ function CustomTabBar({ state, navigation }: any) {
 
   return (
     <View style={styles.barWrapper} pointerEvents="box-none">
-      {/* Same white-to-soft-ice-blue surface used by the Home header. */}
+      {/* Sleek Black Navbar Container */}
       <LinearGradient
-        colors={["#FFFFFF", "#ECF5FB"]}
-        start={{ x: 0, y: 0.15 }}
+        colors={["#0B0F19", "#01011A"]}
+        start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={styles.barContainer}
       >
@@ -189,12 +189,12 @@ const styles = StyleSheet.create({
     height: BAR_H,
     borderRadius: 36,
     borderWidth: 1,
-    borderColor: "#DCEAF6",
-    shadowColor: "#1F2937",
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.08,
+    borderColor: "rgba(255, 255, 255, 0.12)",
+    shadowColor: "#000000",
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.4,
     shadowRadius: 18,
-    elevation: 10,
+    elevation: 12,
     paddingHorizontal: 8,
   },
   tabBtn: {
@@ -214,13 +214,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     position: "relative",
-    borderWidth: 1,
-    borderColor: "#22D3EE",
-    shadowColor: "#0F172A",
+    shadowColor: "#05EAF7",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
+    shadowOpacity: 0.35,
     shadowRadius: 6,
-    elevation: 3,
+    elevation: 4,
   },
   iconPillInactive: {
     width: 48,
@@ -256,7 +254,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1.5,
-    borderColor: "#FFFFFF",
+    borderColor: "#01011A",
     zIndex: 10,
   },
   tabBadgeText: {
@@ -265,4 +263,3 @@ const styles = StyleSheet.create({
     fontWeight: "800",
   },
 });
-
