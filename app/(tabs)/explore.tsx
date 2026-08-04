@@ -9,7 +9,8 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
-  Animated, BackHandler,
+  Animated,
+  BackHandler,
   Dimensions,
   FlatList,
   Image,
@@ -35,9 +36,6 @@ import CaptainAvatar from "../../components/CaptainAvatar";
 import PressableScale from "../../components/PressableScale";
 
 const { width, height } = Dimensions.get("window");
-// On desktop web a half-width tile would be ~700px which looks absurd.
-// Cap at 220px so the explore grid keeps its 2-up-tile rhythm at phone
-// sizes and becomes a real multi-column grid on bigger screens.
 const CARD_WIDTH = Math.min(220, (width - 52) / 2);
 
 // ─── DJ → Equipment mapper ────────────────────────────────────────────────────
@@ -58,14 +56,12 @@ interface EquipmentItem {
 }
 
 function mapDJToEquipment(dj: any): EquipmentItem {
-  // Safely parse genres — comes as JSON string from MySQL
   let genres: string[] = [];
   try {
     genres = typeof dj.genres === "string" ? JSON.parse(dj.genres) : (dj.genres || []);
     if (!Array.isArray(genres)) genres = [];
   } catch { genres = []; }
 
-  // Safely parse images — comes as JSON string from MySQL
   let images: string[] = [];
   try {
     images = typeof dj.images === "string" ? JSON.parse(dj.images) : (dj.images || []);
@@ -74,7 +70,6 @@ function mapDJToEquipment(dj: any): EquipmentItem {
 
   const primaryGenre = genres[0] || "DJ Service";
 
-  // Map genre to category
   let categoryId = "djs";
   const genreLower = primaryGenre.toLowerCase();
   if (genreLower.includes("bollywood") || genreLower.includes("hindi")) categoryId = "bollywood";
@@ -89,12 +84,9 @@ function mapDJToEquipment(dj: any): EquipmentItem {
     category: genres.slice(0, 2).join(" / ") || "DJ Service",
     categoryId,
     price: Math.round(Number(dj.hourlyRate) || 0),
-    // Prefer gallery's first image; fall back to DJ profile picture.
-    // Empty string → SmartImage renders a placeholder.
     image: images[0] || dj.profilePicture || "",
     rating: parseFloat(dj.ratingAverage) || 0,
     reviews: dj.ratingCount || 0,
-    // !!dj.isAvailable handles both boolean true and integer 1 from MySQL
     available: !!dj.isAvailable,
     genres,
     locationCity: dj.captain?.locationCity || dj.locationCity || "",
@@ -162,7 +154,6 @@ function SortSheet({ visible, selectedSort, onSelect, onClose, filterDate, setFi
         <Animated.View style={[ss.sheet, { transform: [{ translateY }] }]}>
           <View style={ss.handleZone}><View style={ss.handle} /></View>
           <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
-            {/* ── Date filter ── */}
             <Text style={ss.groupLabel}>CHECK AVAILABILITY</Text>
             <View style={{ paddingHorizontal: 20 }}>
               <DateField
@@ -179,7 +170,6 @@ function SortSheet({ visible, selectedSort, onSelect, onClose, filterDate, setFi
               </TouchableOpacity>
             )}
 
-            {/* ── Sort ── */}
             <Text style={[ss.groupLabel, { marginTop: 14 }]}>SORT BY</Text>
             {sortOptions.map((opt) => {
               const active = selectedSort === opt.id;
@@ -231,7 +221,6 @@ function EquipmentCard({ item, onPress }: { item: EquipmentItem; onPress: () => 
       <View style={cs.imgWrapper}>
         <SmartImage uri={item.image} style={cs.img} kind="dj" label={item.name} />
 
-        {/* Rating pill (Swiggy-style) top-left */}
         {item.rating > 0 && (
           <View style={cs.ratingPill}>
             <Ionicons name="star" size={10} color="#fff" />
@@ -239,7 +228,6 @@ function EquipmentCard({ item, onPress }: { item: EquipmentItem; onPress: () => 
           </View>
         )}
 
-        {/* Heart button top-right */}
         <TouchableOpacity
           style={cs.heart}
           activeOpacity={0.85}
@@ -249,7 +237,6 @@ function EquipmentCard({ item, onPress }: { item: EquipmentItem; onPress: () => 
           <Ionicons name={liked ? "heart" : "heart-outline"} size={16} color={liked ? "#ef4444" : "#101720"} />
         </TouchableOpacity>
 
-        {/* Availability badge bottom-left */}
         <View style={[cs.availBadge, !item.available && cs.availBadgeOff]}>
           <View style={[cs.availDot, !item.available && cs.availDotOff]} />
           <Text style={cs.availText}>{item.available ? "Available" : "Booked"}</Text>
@@ -386,8 +373,6 @@ export default function BrowseScreen() {
 
   const fetchDJs = useCallback(async () => {
     try {
-      // When user picks a date, backend filters out captains whose unavailable
-      // ranges overlap — so DJs/packages become "date-aware".
       const djParams = filterDate
         ? { startDate: filterDate, endDate: filterDate }
         : undefined;
@@ -473,7 +458,7 @@ export default function BrowseScreen() {
           end={{ x: 0, y: 1 }}
           style={{ flex: 1 }}
         >
-          {/* Header — tight location + right-side cart */}
+          {/* Header — Same smooth ice-blue gradient as Home Page */}
           <Animated.View style={[{ opacity: headerOp, transform: [{ translateY: headerY }] }]}>
             <LinearGradient
               colors={["#FFFFFF", "#ECF5FB"]}
@@ -481,49 +466,49 @@ export default function BrowseScreen() {
               end={{ x: 1, y: 1 }}
               style={styles.header}
             >
-            <TouchableOpacity
-              style={styles.locationWrap}
-              activeOpacity={0.85}
-              onPress={() => setShowLocation(true)}
-            >
-              <View style={styles.locationIconCircle}>
-                <Ionicons name="location-sharp" size={16} color="#02023E" />
-              </View>
-              <View style={{ flex: 1 }}>
-                <View style={styles.deliverRow}>
-                  <Text style={styles.deliverLabel}>BROWSING IN</Text>
-                  <Ionicons name="chevron-down" size={11} color="#8696a0" />
+              <TouchableOpacity
+                style={styles.locationWrap}
+                activeOpacity={0.85}
+                onPress={() => setShowLocation(true)}
+              >
+                <View style={styles.locationIconCircle}>
+                  <Ionicons name="location-sharp" size={16} color="#02023E" />
                 </View>
-                <Text style={styles.locationText} numberOfLines={1}>
-                  {location?.city || location?.area || "Select location"}
-                </Text>
-              </View>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={styles.cartBtn}
-              onPress={() => router.push("/scan" as any)}
-              activeOpacity={0.85}
-            >
-              <Ionicons name="qr-code-outline" size={20} color="#101720" />
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={styles.cartBtn}
-              onPress={() => router.push("/cart" as any)}
-              activeOpacity={0.85}
-            >
-              <Ionicons name="cart-outline" size={20} color="#101720" />
-              {cartItemCount > 0 && (
-                <View style={styles.cartBadge}>
-                  <Text style={styles.cartBadgeText}>{cartItemCount}</Text>
+                <View style={{ flex: 1 }}>
+                  <View style={styles.deliverRow}>
+                    <Text style={styles.deliverLabel}>BROWSING IN</Text>
+                    <Ionicons name="chevron-down" size={11} color="#8696a0" />
+                  </View>
+                  <Text style={styles.locationText} numberOfLines={1}>
+                    {location?.city || location?.area || "Select location"}
+                  </Text>
                 </View>
-              )}
-            </TouchableOpacity>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.cartBtn}
+                onPress={() => router.push("/scan" as any)}
+                activeOpacity={0.85}
+              >
+                <Ionicons name="qr-code-outline" size={20} color="#101720" />
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.cartBtn}
+                onPress={() => router.push("/cart" as any)}
+                activeOpacity={0.85}
+              >
+                <Ionicons name="cart-outline" size={20} color="#101720" />
+                {cartItemCount > 0 && (
+                  <View style={styles.cartBadge}>
+                    <Text style={styles.cartBadgeText}>{cartItemCount}</Text>
+                  </View>
+                )}
+              </TouchableOpacity>
             </LinearGradient>
           </Animated.View>
 
-          {/* Fat rounded search with filter button */}
+          {/* Search bar */}
           <Animated.View style={[styles.searchRow, { opacity: headerOp, transform: [{ translateY: headerY }] }]}>
             <View style={styles.searchBox}>
               <Ionicons name="search" size={20} color="#02023E" />
@@ -575,47 +560,18 @@ export default function BrowseScreen() {
                 }
                 ListHeaderComponent={
                   <View>
-                    {/* Promotional banners — admin-managed from /admin/banners.
-                        Single banner: render centered (no scroll). Multiple:
-                        snap-scrolling carousel. */}
-                    {banners.length === 1 ? (
-                      // The banner sits inside the FlatList's content padding
-                      // (grid: paddingHorizontal 16), so the card must fill
-                      // exactly that width — NOT screen width. alignItems
-                      // centers it (and caps it on wide/desktop screens).
-                      <View style={[styles.bannerWrap, { alignItems: "center" }]}>
-                        <BannerCard banner={banners[0]} width={Math.min(640, width - 32)} onPress={() => {
-                          const link = banners[0]?.ctaLink;
-                          if (link && !link.startsWith("http")) router.push(link as any);
-                        }} />
+                    {/* Branded Mascot DJ Banner Card under search bar */}
+                    <View style={styles.exploreBannerWrap}>
+                      <View style={styles.exploreBannerCard}>
+                        <Image
+                          source={require("../../assets/images/explore-dj-banner.jpg")}
+                          style={styles.exploreBannerImg}
+                          resizeMode="cover"
+                        />
                       </View>
-                    ) : banners.length > 1 ? (
-                      <View style={styles.bannerWrap}>
-                        <ScrollView
-                          horizontal
-                          showsHorizontalScrollIndicator={false}
-                          contentContainerStyle={{ paddingHorizontal: 20, gap: 12 }}
-                          decelerationRate="fast"
-                          snapToInterval={Math.min(560, width - 56) + 12}
-                          snapToAlignment="start"
-                        >
-                          {banners.map((b) => (
-                            <BannerCard
-                              key={b.id}
-                              banner={b}
-                              width={Math.min(560, width - 56)}
-                              onPress={() => {
-                                if (!b.ctaLink) return;
-                                if (b.ctaLink.startsWith("http")) return;
-                                router.push(b.ctaLink as any);
-                              }}
-                            />
-                          ))}
-                        </ScrollView>
-                      </View>
-                    ) : null}
+                    </View>
 
-                    {/* Captains Rail — compact cards with avatar + meta */}
+                    {/* Captains Rail */}
                     {captains.length > 0 && (
                       <View style={styles.captainsRailWrap}>
                         <View style={styles.railHeader}>
@@ -630,7 +586,6 @@ export default function BrowseScreen() {
                           contentContainerStyle={{ paddingHorizontal: 0, gap: 10 }}
                         >
                           {captains.map((c: any) => {
-                            const initial = (c.businessName?.[0] || c.user?.firstName?.[0] || "C").toUpperCase();
                             const verified = !!c.isVerified;
                             return (
                               <TouchableOpacity
@@ -640,9 +595,6 @@ export default function BrowseScreen() {
                                 activeOpacity={0.85}
                               >
                                 <View style={styles.capAvatarWrap}>
-                                  {/* CaptainAvatar handles the http-check + onError
-                                      fallback in one place so a broken Cloudinary
-                                      URL never leaves a grey icon on screen. */}
                                   <CaptainAvatar
                                     uri={c.profilePicture || c.user?.profilePicture || c.user?.avatar || c.avatar}
                                     name={c.businessName || c.user?.firstName || "Captain"}
@@ -676,7 +628,7 @@ export default function BrowseScreen() {
                       </View>
                     )}
 
-                    {/* Categories — Zepto-style colored tiles */}
+                    {/* Categories */}
                     <View style={styles.railHeader}>
                       <Text style={styles.railTitle}>Browse by vibe</Text>
                     </View>
@@ -725,7 +677,7 @@ export default function BrowseScreen() {
                       </TouchableOpacity>
                     </View>
 
-                    {/* Active date-filter chip (when a date is picked in the filter sheet) */}
+                    {/* Active date-filter chip */}
                     {!!filterDate && (
                       <View style={styles.activeFilterRow}>
                         <View style={styles.dateChip}>
@@ -788,7 +740,7 @@ export default function BrowseScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#f4f8ff" },
 
-  // Header — compact location row + cart
+  // Header — compact location row + cart matching Home Page style
   header: {
     flexDirection: "row", alignItems: "center",
     paddingHorizontal: 20, paddingTop: 12, paddingBottom: 10,
@@ -849,6 +801,31 @@ const styles = StyleSheet.create({
     justifyContent: "center", alignItems: "center",
   },
 
+  // Explore Dedicated Mascot DJ Banner
+  exploreBannerWrap: {
+    marginTop: 4,
+    marginBottom: 16,
+    alignItems: "center",
+  },
+  exploreBannerCard: {
+    width: "100%",
+    height: 175,
+    borderRadius: 22,
+    overflow: "hidden",
+    backgroundColor: "#01011A",
+    borderWidth: 1,
+    borderColor: "rgba(5, 234, 247, 0.4)",
+    shadowColor: "#05EAF7",
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.18,
+    shadowRadius: 16,
+    elevation: 5,
+  },
+  exploreBannerImg: {
+    width: "100%",
+    height: "100%",
+  },
+
   // Rail headers
   railHeader: {
     flexDirection: "row", alignItems: "center", justifyContent: "space-between",
@@ -856,30 +833,6 @@ const styles = StyleSheet.create({
   },
   railTitle: { fontSize: 18, fontWeight: "800", color: "#101720", letterSpacing: -0.4 },
   railSeeAll: { fontSize: 12, fontWeight: "700", color: "#02023E" },
-
-  // Captains — compact horizontal card (avatar left, text right)
-  // Promo banners
-  bannerWrap: { marginTop: 4, marginBottom: 14 },
-  bannerCard: {
-    height: 140, borderRadius: 18, overflow: "hidden",
-    backgroundColor: "#101720",
-  },
-  bannerImg: { ...StyleSheet.absoluteFillObject, width: "100%", height: "100%" },
-  bannerOverlay: {
-    position: "absolute", left: 0, right: 0, bottom: 0,
-    paddingHorizontal: 16, paddingVertical: 12,
-    backgroundColor: "rgba(16,23,32,0.55)",
-  },
-  bannerTitle: { fontSize: 16, fontWeight: "800", color: "#fff", letterSpacing: -0.3 },
-  bannerSubtitle: { fontSize: 12, color: "rgba(255,255,255,0.85)", marginTop: 2, fontWeight: "500" },
-  bannerCta: {
-    flexDirection: "row", alignItems: "center", gap: 5,
-    alignSelf: "flex-start",
-    backgroundColor: "#02023E",
-    paddingHorizontal: 10, paddingVertical: 5,
-    borderRadius: 999, marginTop: 8,
-  },
-  bannerCtaText: { fontSize: 11, fontWeight: "800", color: "#101720" },
 
   captainsRailWrap: { marginTop: 4, marginBottom: 4 },
   capCard: {
@@ -893,11 +846,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.12, shadowRadius: 12, elevation: 0,
   },
   capAvatarWrap: { position: "relative" },
-  capAvatar: {
-    width: 44, height: 44, borderRadius: 14,
-    alignItems: "center", justifyContent: "center",
-  },
-  capInitial: { fontSize: 17, fontWeight: "800", color: "#fff" },
   capVerifiedBadge: {
     position: "absolute", bottom: -2, right: -2,
     width: 16, height: 16, borderRadius: 8,
