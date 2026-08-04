@@ -76,7 +76,7 @@ function TabButton({
         {/* Basswala cyan marks the active tab. */}
         {isFocused ? (
           <LinearGradient
-            colors={["#22D3EE", "#05EAF7"]}
+            colors={["rgba(34, 211, 238, 0.72)", "rgba(5, 234, 247, 0.72)"]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
             style={styles.iconPillActive}
