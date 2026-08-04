@@ -1453,7 +1453,8 @@ export default function HomeScreen() {
 
 const s = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#FFFFFF" },
-  scrollContent: { paddingBottom: 0 },
+  // Keeps the footer artwork fully above the floating bottom navigation.
+  scrollContent: { paddingBottom: 96 },
   header: {
     flexDirection: "row", alignItems: "center", height: 74, marginHorizontal: 18, marginTop: 1,
     paddingLeft: 14, paddingRight: 10, borderRadius: 37, gap: 12,
