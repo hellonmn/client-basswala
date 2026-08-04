@@ -1425,6 +1425,17 @@ export default function HomeScreen() {
                   </LinearGradient>
                 </View>
 
+                {/* Decorative closing artwork — transparent asset, contained above the tab bar. */}
+                <View style={s.homeArtWrap}>
+                  <Image
+                    source={require("../../assets/images/home-dj-footer.png")}
+                    style={s.homeArt}
+                    resizeMode="contain"
+                    accessible
+                    accessibilityLabel="DJ relaxing beside a speaker"
+                  />
+                </View>
+
                 <View style={{ height: 120 }} />
               </ScrollView>
             )}
@@ -1658,6 +1669,8 @@ const s = StyleSheet.create({
   promoSub: { fontSize: 12, color: "rgba(255,255,255,0.8)", fontWeight: "500" },
   promoBtn: { backgroundColor: "#fff", paddingHorizontal: 18, paddingVertical: 10, borderRadius: 12 },
   promoBtnText: { fontSize: 13, fontWeight: "700", color: "#02023E" },
+  homeArtWrap: { marginTop: 18, paddingHorizontal: 20, alignItems: "center" },
+  homeArt: { width: "100%", height: 230 },
 });
 
 // ─── Book-a-DJ Styles ─────────────────────────────────────────────────────────
