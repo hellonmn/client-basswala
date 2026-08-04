@@ -1435,8 +1435,6 @@ export default function HomeScreen() {
                     accessibilityLabel="DJ relaxing beside a speaker"
                   />
                 </View>
-
-                <View style={{ height: 120 }} />
               </ScrollView>
             )}
           </Animated.View>
@@ -1455,7 +1453,7 @@ export default function HomeScreen() {
 
 const s = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#FFFFFF" },
-  scrollContent: { paddingBottom: 120 },
+  scrollContent: { paddingBottom: 0 },
   header: {
     flexDirection: "row", alignItems: "center", height: 74, marginHorizontal: 18, marginTop: 1,
     paddingLeft: 14, paddingRight: 10, borderRadius: 37, gap: 12,
