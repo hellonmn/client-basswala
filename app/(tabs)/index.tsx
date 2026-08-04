@@ -730,7 +730,9 @@ export default function HomeScreen() {
         }
 
         setFeaturedDJs(mapped.slice(0, 5));
-        setPopularDJs(mapped.slice(0, 6));
+        // Home intentionally previews only the top three; the complete
+        // catalogue remains available from the Popular DJs “See All” action.
+        setPopularDJs(mapped.slice(0, 3));
       }
 
       if (captainRes.status === "fulfilled" && captainRes.value?.success) {
@@ -1308,9 +1310,13 @@ export default function HomeScreen() {
                         <Text style={s.sectionTitle}>Popular DJs</Text>
                         <Text style={s.sectionSub}>Most booked this week</Text>
                       </View>
-                      <TouchableOpacity style={s.seeAllBtn} onPress={() => router.push("/(tabs)/explore" as any)}>
-                        <Text style={s.seeAll}>See All</Text>
-                        <Ionicons name="arrow-forward" size={13} color="#02023E" />
+                      <TouchableOpacity
+                        style={s.popularSeeAllBtn}
+                        onPress={() => router.push("/(tabs)/explore" as any)}
+                        activeOpacity={0.75}
+                      >
+                        <Text style={s.popularSeeAllText}>See All</Text>
+                        <Ionicons name="arrow-forward" size={14} color="#2563EB" />
                       </TouchableOpacity>
                     </View>
                     <TouchableOpacity
@@ -1354,12 +1360,8 @@ export default function HomeScreen() {
                       </View>
                     </TouchableOpacity>
 
-                    <ScrollView
-                      horizontal
-                      showsHorizontalScrollIndicator={false}
-                      contentContainerStyle={s.smallCardsScroll}
-                    >
-                      {popularDJs.slice(1, 5).map((item, idx) => (
+                    <View style={s.popularGrid}>
+                      {popularDJs.slice(1, 3).map((item, idx) => (
                         <TouchableOpacity
                           key={item.id}
                           style={s.smallCard}
@@ -1401,7 +1403,7 @@ export default function HomeScreen() {
                           </View>
                         </TouchableOpacity>
                       ))}
-                    </ScrollView>
+                    </View>
                   </View>
                 )}
 
@@ -1622,10 +1624,10 @@ const s = StyleSheet.create({
   howCircle: { width: 48, height: 48, borderRadius: 16, backgroundColor: "#f0fafa", justifyContent: "center", alignItems: "center", borderWidth: 1, borderColor: "#d0f0ef", marginBottom: 8 },
   howLabel: { fontSize: 11, fontWeight: "700", color: "#101720", textAlign: "center", lineHeight: 15 },
   howConnector: { position: "absolute", top: 24, right: -16, width: 16, height: 1, backgroundColor: "#d0f0ef" },
-  heroCard: { marginHorizontal: 20, borderRadius: 22, overflow: "hidden", height: 200, position: "relative", marginBottom: 12, borderWidth: 1, borderColor: "#eef0f3" },
+  heroCard: { marginHorizontal: 20, borderRadius: 22, overflow: "hidden", height: 200, position: "relative", marginBottom: 12, borderWidth: 1, borderColor: "#DCEAF6", shadowColor: "#1F2937", shadowOpacity: 0.08, shadowRadius: 10, shadowOffset: { width: 0, height: 4 }, elevation: 3 },
   heroImg: { width: "100%", height: "100%", backgroundColor: "#e5e7eb" },
   heroOverlay: { ...StyleSheet.absoluteFillObject },
-  heroRankBadge: { position: "absolute", top: 12, left: 12, backgroundColor: "#101720", paddingHorizontal: 10, paddingVertical: 4, borderRadius: 10 },
+  heroRankBadge: { position: "absolute", top: 12, left: 12, backgroundColor: "#0F172A", paddingHorizontal: 10, paddingVertical: 4, borderRadius: 10 },
   heroRankText: { fontSize: 11, fontWeight: "800", color: "#fff", letterSpacing: 0.2 },
   heroContent: { position: "absolute", bottom: 0, left: 0, right: 0, flexDirection: "row", alignItems: "flex-end", padding: 16, gap: 12 },
   heroCat: { fontSize: 9, fontWeight: "700", color: "rgba(255,255,255,0.65)", letterSpacing: 0.9, marginBottom: 4 },
@@ -1635,18 +1637,20 @@ const s = StyleSheet.create({
   heroDot: { width: 3, height: 3, borderRadius: 2, backgroundColor: "rgba(255,255,255,0.4)" },
   heroPrice: { fontSize: 12, fontWeight: "700" },
   heroBookBtn: { width: 40, height: 40, borderRadius: 13, backgroundColor: "#fff", justifyContent: "center", alignItems: "center" },
-  smallCardsScroll: { paddingHorizontal: 20, gap: 10 },
-  smallCard: { width: 148, height: 170, borderRadius: 18, overflow: "hidden", position: "relative", borderWidth: 1, borderColor: "#eef0f3" },
+  popularSeeAllBtn: { flexDirection: "row", alignItems: "center", gap: 4, backgroundColor: "#EFF6FF", paddingHorizontal: 10, paddingVertical: 7, borderRadius: 12 },
+  popularSeeAllText: { fontSize: 13, color: "#2563EB", fontWeight: "700" },
+  popularGrid: { flexDirection: "row", gap: 12, paddingHorizontal: 20 },
+  smallCard: { flex: 1, height: 178, borderRadius: 18, overflow: "hidden", position: "relative", borderWidth: 1, borderColor: "#DCEAF6", shadowColor: "#1F2937", shadowOpacity: 0.08, shadowRadius: 8, shadowOffset: { width: 0, height: 3 }, elevation: 2 },
   smallImg: { width: "100%", height: "100%", backgroundColor: "#e5e7eb" },
   smallOverlay: { ...StyleSheet.absoluteFillObject },
-  smallRankBadge: { position: "absolute", top: 10, left: 10, backgroundColor: "#101720", paddingHorizontal: 8, paddingVertical: 3, borderRadius: 9 },
+  smallRankBadge: { position: "absolute", top: 10, left: 10, backgroundColor: "#0F172A", paddingHorizontal: 8, paddingVertical: 3, borderRadius: 9 },
   smallRankText: { fontSize: 11, fontWeight: "800", color: "#fff", letterSpacing: 0.2 },
   smallContent: { position: "absolute", bottom: 0, left: 0, right: 0, padding: 11 },
   smallCat: { fontSize: 8, fontWeight: "700", color: "rgba(255,255,255,0.6)", letterSpacing: 0.7, marginBottom: 3 },
   smallName: { fontSize: 13, fontWeight: "800", color: "#fff", letterSpacing: -0.3, marginBottom: 5 },
   smallFooter: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
   smallRating: { fontSize: 11, fontWeight: "700", color: "#fff" },
-  smallBookBtn: { paddingHorizontal: 8, paddingVertical: 4, borderRadius: 9 },
+  smallBookBtn: { paddingHorizontal: 8, paddingVertical: 5, borderRadius: 9 },
   smallBookBtnText: { fontSize: 10, fontWeight: "800", color: "#fff" },
   promoWrap: { marginHorizontal: 20, borderRadius: 20, overflow: "hidden" },
   promoGrad: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 22, paddingVertical: 20 },
