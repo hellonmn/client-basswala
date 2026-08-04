@@ -24,10 +24,9 @@ const BAR_H = 74;
 const BAR_SIDE_PAD = 16;
 const BAR_WIDTH = Math.min(SCREEN_WIDTH - BAR_SIDE_PAD * 2, 480);
 
-// Basswala night-mode brand colours
-const CYAN_BRAND = "#05EAF7";
-const ACTIVE_TEXT_COLOR = "#05EAF7";
-const INACTIVE_COLOR = "#A6ADB4";
+// Basswala ice-blue brand colours
+const ACTIVE_TEXT_COLOR = "#09095F";
+const INACTIVE_COLOR = "#667085";
 
 function TabButton({
   tab,
@@ -74,10 +73,10 @@ function TabButton({
       android_ripple={null}
     >
       <Animated.View style={[styles.tabContent, { transform: [{ scale: scaleAnim }] }]}>
-        {/* The cyan pill is the active Basswala brand marker. */}
+        {/* The navy pill keeps the active tab legible on the ice-blue bar. */}
         {isFocused ? (
           <LinearGradient
-            colors={["#05EAF7", "#00BFCB"]}
+            colors={["#09095F", "#24247C"]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
             style={styles.iconPillActive}
@@ -85,7 +84,7 @@ function TabButton({
             <Ionicons
               name={tab.icon as any}
               size={22}
-              color="#02023E"
+              color="#FFFFFF"
             />
             {badge != null && badge > 0 && (
               <View style={styles.tabBadge}>
@@ -129,10 +128,10 @@ function CustomTabBar({ state, navigation }: any) {
 
   return (
     <View style={styles.barWrapper} pointerEvents="box-none">
-      {/* Black navigation base with a restrained Basswala cyan highlight. */}
+      {/* Same white-to-ice-blue surface used by the Home header. */}
       <LinearGradient
-        colors={["#050505", "#161616"]}
-        start={{ x: 0, y: 0 }}
+        colors={["#FFFFFF", "#E6F5FF"]}
+        start={{ x: 0, y: 0.15 }}
         end={{ x: 1, y: 1 }}
         style={styles.barContainer}
       >
@@ -190,10 +189,10 @@ const styles = StyleSheet.create({
     height: BAR_H,
     borderRadius: 36,
     borderWidth: 1,
-    borderColor: "rgba(5, 234, 247, 0.28)",
-    shadowColor: "#000000",
+    borderColor: "#D7E8F7",
+    shadowColor: "#617B92",
     shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.35,
+    shadowOpacity: 0.16,
     shadowRadius: 18,
     elevation: 10,
     paddingHorizontal: 8,
@@ -216,8 +215,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     position: "relative",
     borderWidth: 1,
-    borderColor: "rgba(255, 255, 255, 0.2)",
-    shadowColor: CYAN_BRAND,
+    borderColor: "rgba(255, 255, 255, 0.25)",
+    shadowColor: "#09095F",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 6,
@@ -257,7 +256,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1.5,
-    borderColor: "#111111",
+    borderColor: "#FFFFFF",
     zIndex: 10,
   },
   tabBadgeText: {
